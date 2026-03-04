@@ -1,168 +1,163 @@
-# Turborepo Demo
+# g-ai-ui
 
-一个基于 Turborepo 构建的 monorepo 演示项目，展示了如何高效管理多个子包。
+`g-ai-ui` 是一个基于 `Turborepo + pnpm workspace` 的 AI 组件库 monorepo，包含组件库、工具函数、文档站点和 Next.js 示例应用。
 
-## 项目结构
+## 项目定位
 
-```
-turborepo-demo/
-├── apps/
-│   ├── utils/          # 工具函数库
-│   │   ├── src/
-│   │   │   └── index.ts # merge, shallowCopy
-│   │   ├── tsup.config.ts
-│   │   └── package.json
-│   ├── ui/             # UI 组件库
-│   │   ├── src/
-│   │   │   ├── index.ts
-│   │   │   └── components/
-│   │   │       ├── ChatBubble.tsx
-│   │   │       └── ChatInput.tsx
-│   │   ├── vite.config.ts
-│   │   ├── tailwind.config.js
-│   │   └── package.json
-│   ├── web/            # Dashboard 页面
-│   │   ├── src/
-│   │   │   └── app/
-│   │   │       ├── layout.tsx
-│   │   │       ├── page.tsx
-│   │   │       └── globals.css
-│   │   ├── next.config.js
-│   │   ├── tailwind.config.js
-│   │   └── package.json
-│   └── doc/            # 文档站点
-│       ├── docs/
-│       │   ├── index.md
-│       │   └── guide/
-│       │       ├── getting-started.md
-│       │       ├── components.md
-│       │       └── web.md
-│       ├── rspress.config.ts
-│       └── package.json
-├── package.json
-├── pnpm-workspace.yaml
-└── turbo.json
+- 在一个仓库中维护可复用的 UI 组件与工具函数
+- 通过 `workspace:*` 实现本地包联调
+- 借助 Turborepo 做增量构建、任务编排和缓存复用
+
+## 技术架构
+
+| 模块 | 路径 | 技术栈 | 作用 |
+| --- | --- | --- | --- |
+| `@g-ai-ui/utils` | `packages/utils` | TypeScript, tsup | 通用工具函数 |
+| `@g-ai-ui/ui` | `packages/ui` | React 18, TypeScript, Tailwind CSS, tsup | 对话 UI 组件库 |
+| `@g-ai-ui/web` | `apps/web` | Next.js 15, Turbopack, Tailwind CSS | 组件集成示例（Dashboard） |
+| `@g-ai-ui/doc` | `apps/doc` | Rspress, React, Tailwind CSS | 组件与指南文档站 |
+
+依赖关系：
+
+```txt
+@g-ai-ui/web  -> @g-ai-ui/ui -> @g-ai-ui/utils
+@g-ai-ui/doc  -> @g-ai-ui/ui
 ```
 
-## 子包说明
+## 目录结构
 
-### 1. Utils (@g-ai-ui/utils)
+```txt
+g-ai-ui/
+├─ apps/
+│  ├─ web/                 # Next.js 示例应用（端口 3010）
+│  └─ doc/                 # Rspress 文档站（端口 3020）
+├─ packages/
+│  ├─ ui/                  # React 组件库（ChatBubble / ChatInput）
+│  └─ utils/               # AI 工具函数库（基于 es-toolkit）
+├─ turbo.json              # Turborepo 任务流水线
+├─ pnpm-workspace.yaml     # workspace 声明
+└─ package.json            # 根脚本
+```
 
-- **打包工具**: tsup
-- **输出格式**: ESM, CJS, IIFE
-- **功能**: 通用工具函数
-  - `merge()`: 对象合并
-  - `shallowCopy()`: 浅拷贝
+## 环境要求
 
-### 2. UI (@g-ai-ui/ui)
-
-- **打包工具**: Vite
-- **输出格式**: ESM, CJS, IIFE
-- **技术栈**: React, TypeScript, Tailwind CSS
-- **组件**:
-  - `ChatBubble`: 对话气泡
-  - `ChatInput`: 对话输入框
-- **依赖**: 引用 utils 子包
-
-### 3. Web (@g-ai-ui/web)
-
-- **打包工具**: Turbopack (Next.js 15)
-- **技术栈**: Next.js, TypeScript, Tailwind CSS
-- **功能**: Dashboard 页面
-- **依赖**: 引用 ui 子包
-- **端口**: 3000
-
-### 4. Doc (doc)
-
-- **打包工具**: RSPress
-- **技术栈**: Markdown, TypeScript
-- **功能**: 文档站点
-- **依赖**: 引用 ui 子包
-- **端口**: 3001
+- Node.js >= 18
+- pnpm（仓库锁定：`pnpm@10.14.0`）
 
 ## 快速开始
 
-### 安装依赖
-
 ```bash
 pnpm install
-```
-
-### 开发模式
-
-启动所有子包：
-
-```bash
 pnpm dev
 ```
 
-单独启动某个子包：
+执行 `pnpm dev` 后会通过 Turborepo 启动工作区内的开发任务，常用访问地址：
+
+- Web 示例：`http://localhost:3010`
+- 文档站：`http://localhost:3020`
+
+## 常用命令
+
+### 根命令
 
 ```bash
-# Utils
-pnpm --filter @g-ai-ui/utils dev
+pnpm dev
+pnpm build
+pnpm lint
+pnpm format
+pnpm changeset
+```
 
-# UI
-pnpm --filter @g-ai-ui/ui dev
+### 按包运行
 
-# Web
+```bash
+# 示例应用
 pnpm --filter @g-ai-ui/web dev
 
-# Doc
-pnpm --filter doc dev
+# 文档站
+pnpm --filter @g-ai-ui/doc dev
+
+# 组件库
+pnpm --filter @g-ai-ui/ui dev
+
+# 工具库
+pnpm --filter @g-ai-ui/utils dev
 ```
 
-### 构建
-
-构建所有子包：
+### 类型检查（按包）
 
 ```bash
-pnpm build
+pnpm --filter @g-ai-ui/ui typecheck
+pnpm --filter @g-ai-ui/utils typecheck
 ```
 
-单独构建某个子包：
+## 包能力说明
 
-```bash
-pnpm --filter @g-ai-ui/utils build
-pnpm --filter @g-ai-ui/ui build
-pnpm --filter @g-ai-ui/web build
-pnpm --filter doc build
+### `@g-ai-ui/utils`
+
+- `normalizePrompt`: 规范化提示词
+- `renderPromptTemplate`: 渲染提示词模板
+- `buildMessageContext`: 构建对话上下文窗口
+- `pickTopScoredChunks`: 检索结果 TopK 选择
+- `mergeModelConfig`: 合并并规范化模型参数
+- `tsup` 输出格式：`esm` / `cjs` / `iife`
+
+### `@g-ai-ui/ui`
+
+- 导出组件：`ChatBubble`、`ChatInput`
+- 依赖 `@g-ai-ui/utils`
+- `react` / `react-dom` 作为 `peerDependencies`
+- `tsup` 输出格式：`esm` / `cjs`
+
+### `@g-ai-ui/web`
+
+- 基于 Next.js 15 + Turbopack 的 Dashboard 示例
+- 展示 `ChatBubble` + `ChatInput` 的组合使用
+- 通过 `transpilePackages` 直接消费工作区包
+
+### `@g-ai-ui/doc`
+
+- 基于 Rspress 的中文文档站
+- 包含快速开始、组件文档、工具函数、Web 集成说明
+
+## 使用示例
+
+### 使用 UI 组件
+
+```tsx
+import { useState } from "react";
+import { ChatBubble, ChatInput } from "@g-ai-ui/ui";
+
+export default function Demo() {
+  const [messages, setMessages] = useState<string[]>([]);
+
+  return (
+    <div>
+      {messages.map((text, i) => (
+        <ChatBubble key={i} message={text} isUser={i % 2 === 0} />
+      ))}
+      <ChatInput onSend={(message) => setMessages((prev) => [...prev, message])} />
+    </div>
+  );
+}
 ```
 
-## 技术栈
+### 使用工具函数
 
-| 子包 | 打包工具 | 主要技术 | 端口 |
-|------|---------|---------|------|
-| Utils | tsup | TypeScript | - |
-| UI | Vite | React, TS, Tailwind CSS | - |
-| Web | Turbopack | Next.js, TS, Tailwind CSS | 3000 |
-| Doc | RSPress | Markdown, TS | 3001 |
+```ts
+import { normalizePrompt, renderPromptTemplate } from "@g-ai-ui/utils";
 
-## 功能特性
+const prompt = normalizePrompt("  你是一个助手，请回答问题。  ");
+const rendered = renderPromptTemplate("回答：{{q}}", { q: "如何复用组件库？" });
+```
 
-### Turborepo 优势
+## Turborepo 任务说明
 
-- 🚀 **增量构建**: 只构建改变的包
-- 💾 **缓存优化**: 跨包缓存任务结果
-- 🔄 **并行执行**: 同时执行多个任务
-- 📦 **依赖管理**: 自动处理包之间的依赖关系
+- `build`：依赖上游包的 `build`，缓存 `dist/**` 和 `.next/**`
+- `dev`：`persistent` + `no cache`，并依赖上游 `build`
+- `lint`：依赖上游包的 `lint`
 
-### Monorepo 优势
+## 备注
 
-- 🔗 **共享代码**: 轻松在不同包之间共享代码
-- 🛠️ **统一工具**: 所有包使用相同的工具链
-- 📊 **版本管理**: 统一管理依赖版本
-- 🎯 **原子提交**: 跨包的原子性代码变更
-
-## 访问地址
-
-- **Web 应用**: http://localhost:3000
-- **文档站点**: http://localhost:3001
-
-## 贡献指南
-
-欢迎提交 Issue 和 Pull Request！
-
-## 许可证
-
-MIT
+- 当前所有包均为 `private: true`，更偏向内部协作与演示。
+- 文档中的旧示例仓库名若与本仓库不一致，请以当前目录结构和包名为准。

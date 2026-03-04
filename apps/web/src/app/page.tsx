@@ -1,8 +1,15 @@
 'use client'
 
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { ChatBubble, ChatInput } from '@g-ai-ui/ui'
-import { merge } from '@g-ai-ui/utils'
+import {
+  buildMessageContext,
+  mergeModelConfig,
+  normalizePrompt,
+  pickTopScoredChunks,
+  renderPromptTemplate,
+  type AIMessage,
+} from '@g-ai-ui/utils'
 
 interface Message {
   id: string
@@ -12,7 +19,69 @@ interface Message {
 }
 
 export default function Dashboard() {
-  console.log(merge({ a: 1 }, { b: 2 }))
+  const aiToolTestResult = useMemo(() => {
+    const sampleMessages: AIMessage[] = [
+      {
+        role: 'system',
+        content: '  你是一个严谨的 AI 前端助手。  ',
+        createdAt: 1,
+      },
+      {
+        role: 'user',
+        content: '请告诉我如何在 Turborepo 中共享组件库？',
+        createdAt: 2,
+      },
+      {
+        role: 'assistant',
+        content: '可以通过 workspace:* 依赖 + transpilePackages 实现。',
+        createdAt: 3,
+      },
+      {
+        role: 'tool',
+        content: '检索到 3 条文档片段。',
+        createdAt: 4,
+      },
+    ]
+
+    return {
+      normalizedPrompt: normalizePrompt(
+        '  你是一个代码助手。  \n\n请输出最小可用方案。   ',
+        { preserveLineBreaks: true, maxLength: 80 }
+      ),
+      renderedPrompt: renderPromptTemplate('你是{{role}}，请回答：{{question}}', {
+        role: 'AI 助手',
+        question: '如何新增通用工具函数？',
+      }),
+      contextWindow: buildMessageContext(sampleMessages, {
+        maxMessages: 3,
+        maxCharsPerMessage: 60,
+        includeRoles: ['system', 'user', 'assistant'],
+      }),
+      topChunks: pickTopScoredChunks(
+        [
+          { id: 'doc-1', content: 'pnpm workspace 说明', score: 0.82 },
+          { id: 'doc-2', content: '组件库接入示例', score: 0.95 },
+          { id: 'doc-3', content: 'Tailwind 配置', score: 0.7 },
+        ],
+        2
+      ),
+      modelConfig: mergeModelConfig(
+        {
+          model: 'gpt-4o-mini',
+          temperature: 0.7,
+          topP: 1,
+          maxTokens: 2048,
+          stream: true,
+        },
+        {
+          temperature: 1.4,
+          maxTokens: 4096,
+          stop: ['\n\n', 'END'],
+        }
+      ),
+    }
+  }, [])
+
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
@@ -99,6 +168,16 @@ export default function Dashboard() {
             ))}
           </div>
           <ChatInput onSend={handleSendMessage} placeholder="输入消息..." />
+        </div>
+
+        <div className="bg-white rounded-lg shadow-lg p-6 mt-6">
+          <h2 className="text-xl font-bold mb-2 text-gray-900">AI 工具函数测试</h2>
+          <p className="text-sm text-gray-600 mb-4">
+            下面的数据由 @g-ai-ui/utils 在页面内实时计算，可用于联调验证。
+          </p>
+          <pre className="rounded-lg border border-gray-200 bg-gray-50 p-4 text-xs text-gray-800 overflow-x-auto">
+            {JSON.stringify(aiToolTestResult, null, 2)}
+          </pre>
         </div>
       </main>
     </div>
