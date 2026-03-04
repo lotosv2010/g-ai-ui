@@ -4,11 +4,7 @@ title: Web 应用
 
 # Web 应用
 
-`@g-ai-ui/web` 是组件库与工具函数的集成验证层，不只是展示页面。它承担三类职责：
-
-- 验证 `@g-ai-ui/ui` 在真实页面中的可用性
-- 验证 `@g-ai-ui/utils` 在业务流程中的输出稳定性
-- 为文档示例提供可运行的落地参照
+`@g-ai-ui/web` 是组件库与工具函数的联调验证层，定位不是 Demo，而是工程化的可运行实验场。
 
 ## 快速运行
 
@@ -18,28 +14,28 @@ pnpm --filter @g-ai-ui/web dev
 
 访问：`http://localhost:3010`
 
-## 当前集成能力
+## 页面结构
 
-### 1. Ant X 风格组件编排
+Web Playground 采用“双菜单 + 主工作区”布局：
 
-- `Welcome`：首屏引导区
-- `Conversations`：左侧会话列表
-- `Prompts`：快捷提示词网格
-- `Attachments`：附件状态卡片
-- `Bubble`：消息流渲染
-- `Sender`：输入与发送控制
+- `组件测试`：集中验证 `Welcome / Conversations / Prompts / Attachments / Bubble / Sender`
+- `工具测试`：集中验证 `normalizePrompt / renderPromptTemplate / buildMessageContext / pickTopScoredChunks / mergeModelConfig`
 
-### 2. AI 工具函数验证
+这种分区方式可以避免组件视觉验证与工具函数输出验证相互干扰。
 
-页面内置 “AI 工具函数测试” 区域，运行并展示：
+## 当前能力
 
-- `normalizePrompt`
-- `renderPromptTemplate`
-- `buildMessageContext`
-- `pickTopScoredChunks`
-- `mergeModelConfig`
+### 1. 组件测试视图
 
-这有助于在改动工具函数后快速校验行为是否符合预期。
+- 左侧：会话列表与附件状态
+- 右侧：欢迎区、提示词、消息流、发送器
+- 目标：验证完整会话链路交互是否顺畅
+
+### 2. 工具测试视图
+
+- 每个工具函数单独提供输入项与 JSON 输出
+- 支持实时调整 `TopK`、`maxMessages`、`temperature`、`maxTokens` 等参数
+- 目标：快速确认函数行为、参数边界与结果格式
 
 ## 关键工程配置
 
@@ -74,21 +70,8 @@ const nextConfig = {
 }
 ```
 
-## 目录说明
-
-```txt
-apps/web/
-├── src/app/
-│   ├── layout.tsx       # 根布局
-│   ├── page.tsx         # 集成验证页面
-│   └── globals.css      # 全局样式
-├── next.config.js
-└── package.json
-```
-
 ## 推荐工作流
 
-1. 在 `packages/ui` 或 `packages/utils` 实施改动。  
-2. 在 `apps/web` 观察页面交互与测试区输出。  
-3. 回写文档示例，保持“代码行为”和“文档描述”一致。  
-4. 若涉及交互形态变更，优先参照 `x.ant.design` 的组件范式统一体验语言。  
+1. 在 `packages/ui` 或 `packages/utils` 实施变更。
+2. 在 `apps/web` 切换对应菜单验证结果。
+3. 回写文档与示例，保持实现和描述一致。

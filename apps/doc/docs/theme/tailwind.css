@@ -2,6 +2,41 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --ga-primary: #1677ff;
+  --ga-accent: #36cfc9;
+  --ga-bg: #f7faff;
+}
+
+body {
+  font-family: 'Plus Jakarta Sans', 'Avenir Next', 'SF Pro Display',
+    'PingFang SC', 'Hiragino Sans GB', 'Segoe UI', sans-serif;
+  background:
+    radial-gradient(circle at 6% 0%, #ecf5ff 0%, transparent 38%),
+    radial-gradient(circle at 96% 6%, #ecfffb 0%, transparent 36%),
+    var(--ga-bg);
+}
+
+.rspress-home-hero {
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  border-radius: 28px;
+  background: linear-gradient(140deg, #ffffff 0%, #f4f8ff 50%, #f6fffb 100%);
+  box-shadow: 0 24px 60px rgba(15, 23, 42, 0.08);
+  backdrop-filter: blur(4px);
+  padding: 34px 28px;
+}
+
+.rspress-home-hero-name {
+  background: linear-gradient(120deg, #0f172a 0%, var(--ga-primary) 52%, var(--ga-accent) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.rspress-home-hero-tagline {
+  max-width: 860px;
+}
+
 /* Keep home hero actions in one horizontal row/wrap instead of vertical stack. */
 .rspress-home-hero-tagline + div {
   display: flex !important;
@@ -17,4 +52,40 @@
 
 .rspress-home-hero-tagline + div a {
   width: auto !important;
+  border-radius: 999px !important;
+  border: 1px solid #dbe3ee !important;
+  background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%) !important;
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.06);
+  transition: all 180ms ease;
+}
+
+.rspress-home-hero-tagline + div a:hover {
+  transform: translateY(-1px);
+  border-color: #93c5fd !important;
+  box-shadow: 0 12px 24px rgba(22, 119, 255, 0.16);
+}
+
+.rspress-home-hero-tagline + div a[class*='primary'] {
+  border-color: rgba(22, 119, 255, 0.45) !important;
+  background: linear-gradient(135deg, #1677ff 0%, #36cfc9 100%) !important;
+}
+
+.rspress-home-features .rspress-home-feature {
+  border-radius: 20px;
+  border: 1px solid rgba(226, 232, 240, 0.95);
+  background: rgba(255, 255, 255, 0.88);
+  box-shadow: 0 14px 34px rgba(15, 23, 42, 0.07);
+  transition: transform 180ms ease, box-shadow 180ms ease;
+}
+
+.rspress-home-features .rspress-home-feature:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 36px rgba(22, 119, 255, 0.14);
+}
+
+@media (max-width: 768px) {
+  .rspress-home-hero {
+    border-radius: 24px;
+    padding: 26px 18px;
+  }
 }

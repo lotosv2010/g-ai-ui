@@ -9,7 +9,6 @@ export default defineConfig({
     showLineNumbers: true,
   },
   themeConfig: {
-    // 导航栏配置
     nav: [
       {
         text: '首页',
@@ -20,7 +19,7 @@ export default defineConfig({
         link: '/guide/getting-started',
       },
       {
-        text: '组件能力',
+        text: '组件',
         link: '/components/',
         activeMatch: '^/components/',
       },
@@ -32,25 +31,21 @@ export default defineConfig({
             link: '/guide/utils',
           },
           {
-            text: '主题定制',
-            link: '/guide/theming',
+            text: 'Web Playground',
+            link: '/guide/web',
           },
           {
-            text: 'Web 应用',
-            link: '/guide/web',
-          }
+            text: '样式定制',
+            link: '/guide/theming',
+          },
         ],
       },
     ],
-    // 侧边栏配置（左侧导航）
     sidebar: {
-      // 指南页面的侧边栏
       '/guide/': [
         {
           text: '项目接入',
-          items: [
-            '/guide/getting-started',
-          ],
+          items: ['/guide/getting-started'],
         },
         {
           text: '能力与实践',
@@ -62,40 +57,20 @@ export default defineConfig({
           ],
         },
       ],
-      // 组件页面的侧边栏
       '/components/': [
         {
           text: '核心组件',
           items: [
-            {
-              text: 'Welcome 欢迎区',
-              link: '/components/welcome',
-            },
-            {
-              text: 'Conversations 会话列表',
-              link: '/components/conversations',
-            },
-            {
-              text: 'Prompts 快捷提示',
-              link: '/components/prompts',
-            },
-            {
-              text: 'Attachments 附件列表',
-              link: '/components/attachments',
-            },
-            {
-              text: 'Bubble 消息气泡',
-              link: '/components/bubble',
-            },
-            {
-              text: 'Sender 输入发送器',
-              link: '/components/sender',
-            },
+            { text: 'Welcome 欢迎区', link: '/components/welcome' },
+            { text: 'Conversations 会话列表', link: '/components/conversations' },
+            { text: 'Prompts 快捷提示', link: '/components/prompts' },
+            { text: 'Attachments 附件列表', link: '/components/attachments' },
+            { text: 'Bubble 消息气泡', link: '/components/bubble' },
+            { text: 'Sender 输入发送器', link: '/components/sender' },
           ],
         },
       ],
     },
-    // 社交链接（右上角图标）
     socialLinks: [
       {
         icon: 'github',

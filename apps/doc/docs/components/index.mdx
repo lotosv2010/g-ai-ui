@@ -13,37 +13,37 @@ import {
 
 # 组件列表
 
-当前组件体系参照 Ant Design X 的核心交互模型（`Welcome / Conversations / Prompts / Attachments / Bubble / Sender`），用于快速搭建 AI 对话产品的主流程页面。
+`@g-ai-ui/ui` 参考 Ant Design X 的会话式交互范式，围绕 AI 产品主路径提供六个核心组件。
 
 ## 核心组件
 
-- [Welcome](./welcome.mdx)：欢迎区与场景引导
+- [Welcome](./welcome.mdx)：首屏欢迎区与任务引导
 - [Conversations](./conversations.mdx)：会话列表与上下文切换
-- [Prompts](./prompts.mdx)：快捷提示词入口
-- [Attachments](./attachments.mdx)：附件状态展示
+- [Prompts](./prompts.mdx)：快捷提示词推荐
+- [Attachments](./attachments.mdx)：附件上传状态管理
 - [Bubble](./bubble.mdx)：消息渲染单元
-- [Sender](./sender.mdx)：输入发送器
+- [Sender](./sender.mdx)：输入与发送控制
 
-## 快速预览
+## 组合预览
 
 <Welcome
   title="你好，今天想构建什么 AI 体验？"
-  description="你可以直接选择提示词，也可以在 Sender 中输入具体任务。"
+  description="从欢迎引导到消息交互，组件之间遵循一致的视觉语言与交互节奏。"
 />
 
 <div className="grid gap-3 md:grid-cols-2 my-4">
   <Conversations
     items={[
       { id: '1', title: '产品文档问答', description: '最近更新：2 分钟前', unread: 2, pinned: true },
-      { id: '2', title: '多轮客服机器人', description: '最近更新：昨天 20:18' },
+      { id: '2', title: '客服机器人评审', description: '最近更新：昨天 20:18' },
     ]}
     activeId="1"
   />
   <Prompts
     items={[
-      { id: 'a', title: '生成发布公告', description: '根据本次迭代摘要自动生成版本公告' },
+      { id: 'a', title: '生成发布公告', description: '根据迭代摘要自动生成版本公告' },
       { id: 'b', title: '输出接口契约', description: '从组件 props 推导 API 文档' },
-      { id: 'c', title: '代码审查建议', description: '聚焦可维护性和边界条件' },
+      { id: 'c', title: '代码评审建议', description: '聚焦可维护性与边界条件' },
     ]}
   />
 </div>
@@ -53,7 +53,7 @@ import {
     role="assistant"
     header="Assistant"
     footer="10:24"
-    content="我建议你先定义组件边界，再补充联调示例。"
+    content="建议先确定组件职责边界，再补齐业务联调示例。"
   />
   <Sender onSubmit={() => {}} placeholder="输入问题并发送..." />
 </div>

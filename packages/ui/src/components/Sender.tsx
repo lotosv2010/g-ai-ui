@@ -59,14 +59,16 @@ export const Sender: React.FC<SenderProps> = ({
 
   return (
     <div
-      className={`rounded-2xl border border-slate-200 bg-white p-3 shadow-[0_10px_30px_rgba(15,23,42,0.08)] ${className}`}
+      className={`rounded-[22px] border border-slate-200/80 bg-white/90 p-4 shadow-[0_18px_45px_rgba(15,23,42,0.08)] backdrop-blur ${className}`}
     >
-      <div className="mb-2 flex items-center justify-between text-xs text-slate-500">
+      <div className="mb-3 flex items-center justify-between text-xs text-slate-500">
         <div className="inline-flex items-center gap-2">
-          <span className="rounded-full bg-slate-100 px-2 py-1">AI Sender</span>
+          <span className="rounded-full border border-blue-200 bg-blue-50 px-2.5 py-1 font-medium text-blue-600">
+            AI Sender
+          </span>
           {prefix}
         </div>
-        <span>
+        <span className="rounded-full bg-slate-100 px-2 py-1">
           {currentValue.length}/{maxLength}
         </span>
       </div>
@@ -84,7 +86,7 @@ export const Sender: React.FC<SenderProps> = ({
         placeholder={placeholder}
         disabled={disabled}
         rows={3}
-        className="w-full resize-none rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-800 placeholder:text-slate-400 focus:border-blue-300 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-100 disabled:cursor-not-allowed disabled:opacity-60"
+        className="w-full resize-none rounded-2xl border border-slate-200 bg-[linear-gradient(180deg,#f8fafc_0%,#ffffff_100%)] px-4 py-3 text-sm text-slate-800 placeholder:text-slate-400 transition focus:border-blue-300 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-100 disabled:cursor-not-allowed disabled:opacity-60"
       />
 
       <div className="mt-3 flex items-center justify-between">
@@ -92,14 +94,14 @@ export const Sender: React.FC<SenderProps> = ({
           <button
             type="button"
             disabled={disabled}
-            className="rounded-lg border border-slate-200 px-2 py-1 hover:bg-slate-50 disabled:cursor-not-allowed"
+            className="rounded-xl border border-slate-200 bg-white px-2.5 py-1.5 transition hover:border-blue-200 hover:text-blue-600 disabled:cursor-not-allowed"
           >
             + 附件
           </button>
           <button
             type="button"
             disabled={disabled}
-            className="rounded-lg border border-slate-200 px-2 py-1 hover:bg-slate-50 disabled:cursor-not-allowed"
+            className="rounded-xl border border-slate-200 bg-white px-2.5 py-1.5 transition hover:border-blue-200 hover:text-blue-600 disabled:cursor-not-allowed"
           >
             / 指令
           </button>
@@ -110,7 +112,7 @@ export const Sender: React.FC<SenderProps> = ({
           type="button"
           onClick={handleSubmit}
           disabled={!canSubmit}
-          className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-blue-500 to-cyan-500 px-4 py-2 text-sm font-medium text-white transition hover:from-blue-600 hover:to-cyan-600 disabled:cursor-not-allowed disabled:from-slate-300 disabled:to-slate-300"
+          className="inline-flex items-center gap-2 rounded-xl bg-[linear-gradient(135deg,#1677ff_0%,#36cfc9_100%)] px-4 py-2 text-sm font-medium text-white shadow-[0_10px_24px_rgba(22,119,255,0.28)] transition hover:brightness-105 disabled:cursor-not-allowed disabled:bg-slate-300 disabled:shadow-none"
         >
           {loading ? '发送中...' : submitLabel}
         </button>

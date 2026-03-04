@@ -21,24 +21,26 @@ export const Prompts: React.FC<PromptsProps> = ({
 }) => {
   return (
     <section
-      className={`rounded-2xl border border-slate-200 bg-white p-4 shadow-[0_10px_30px_rgba(15,23,42,0.08)] ${className}`}
+      className={`rounded-[22px] border border-slate-200/80 bg-white/90 p-4 shadow-[0_18px_45px_rgba(15,23,42,0.08)] backdrop-blur ${className}`}
     >
       <header className="mb-3 flex items-center justify-between">
         <h3 className="text-sm font-semibold text-slate-900">Prompts</h3>
         <span className="text-xs text-slate-400">快捷提问模板</span>
       </header>
 
-      <div className="grid gap-2 sm:grid-cols-2">
+      <div className="grid gap-2.5 sm:grid-cols-2">
         {items.map((item) => (
           <button
             key={item.id}
             type="button"
             onClick={() => onSelect?.(item)}
             disabled={item.disabled}
-            className="rounded-xl border border-slate-200 bg-slate-50 p-3 text-left transition hover:border-blue-200 hover:bg-blue-50 disabled:cursor-not-allowed disabled:opacity-50"
+            className="group rounded-2xl border border-slate-200 bg-[linear-gradient(180deg,#ffffff_0%,#f8fafc_100%)] p-3.5 text-left transition hover:-translate-y-0.5 hover:border-blue-200 hover:shadow-[0_10px_20px_rgba(22,119,255,0.14)] disabled:cursor-not-allowed disabled:opacity-50"
           >
             <div className="flex items-start gap-2">
-              <span className="mt-0.5 text-base text-blue-500">{item.icon ?? '✦'}</span>
+              <span className="mt-0.5 grid h-8 w-8 place-items-center rounded-xl bg-blue-50 text-base text-blue-500 transition group-hover:bg-blue-100">
+                {item.icon ?? '✦'}
+              </span>
               <div>
                 <p className="text-sm font-medium text-slate-800">{item.title}</p>
                 {item.description && (

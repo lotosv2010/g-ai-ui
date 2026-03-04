@@ -28,6 +28,21 @@ interface Message {
   createdAt: number
 }
 
+type LabMenuKey = 'components' | 'tools'
+
+const menuItems: Array<{ key: LabMenuKey; label: string; description: string }> = [
+  {
+    key: 'components',
+    label: '组件测试',
+    description: '验证 Welcome / Bubble / Sender 等交互体验',
+  },
+  {
+    key: 'tools',
+    label: '工具测试',
+    description: '验证 normalizePrompt 等 AI 工具函数输出',
+  },
+]
+
 const conversationSeed: ConversationItem[] = [
   {
     id: 'conv-1',
@@ -80,7 +95,21 @@ const attachmentSeed: AttachmentItem[] = [
   { id: 'a2', name: 'qa-report.pdf', size: '2.1 MB', status: 'uploading' },
 ]
 
+const chunkSeed = [
+  { id: 'doc-1', content: '组件 API 契约文档', score: 0.91 },
+  { id: 'doc-2', content: 'monorepo 开发规范', score: 0.87 },
+  { id: 'doc-3', content: 'Tailwind 主题策略', score: 0.66 },
+  { id: 'doc-4', content: '工具函数输入输出基线', score: 0.93 },
+]
+
+function JsonBlock({ value }: { value: unknown }) {
+  return (
+    <pre className="aix-json-block">{JSON.stringify(value, null, 2)}</pre>
+  )
+}
+
 export default function Dashboard() {
+  const [activeMenu, setActiveMenu] = useState<LabMenuKey>('components')
   const [activeConversationId, setActiveConversationId] = useState('conv-1')
   const [draft, setDraft] = useState('')
   const [isReplying, setIsReplying] = useState(false)
@@ -90,10 +119,24 @@ export default function Dashboard() {
       id: 'm-1',
       role: 'assistant',
       content:
-        '你好，我是 g-ai-ui 助手。你可以直接选择提示词，或者在下方 Sender 中输入需求。',
+        '你好，我是 g-ai-ui 助手。你可以在组件测试中验证交互，也可以切到工具测试查看函数输出。',
       createdAt: Date.now(),
     },
   ])
+
+  const [promptInput, setPromptInput] = useState(
+    '  你是一个企业级 AI 助手，请输出可执行的迭代计划。  '
+  )
+  const [templateText, setTemplateText] = useState(
+    '你是 {{role}}，请完成：{{task}}，优先级：{{priority}}。'
+  )
+  const [templateVarsText, setTemplateVarsText] = useState(
+    '{"role":"前端架构师","task":"优化 Playground 布局","priority":"P1"}'
+  )
+  const [contextMaxMessages, setContextMaxMessages] = useState(4)
+  const [topK, setTopK] = useState(2)
+  const [temperature, setTemperature] = useState(1.1)
+  const [maxTokens, setMaxTokens] = useState(4096)
 
   const handleSend = (input: string) => {
     const text = normalizePrompt(input, { preserveLineBreaks: true, maxLength: 500 })
@@ -131,15 +174,7 @@ export default function Dashboard() {
         },
       ])
 
-      const topChunks = pickTopScoredChunks(
-        [
-          { id: 'doc-1', content: '组件 API 契约文档', score: 0.91 },
-          { id: 'doc-2', content: 'monorepo 开发规范', score: 0.87 },
-          { id: 'doc-3', content: 'Tailwind 主题策略', score: 0.66 },
-        ],
-        2
-      )
-
+      const topChunks = pickTopScoredChunks(chunkSeed, 2)
       const config = mergeModelConfig(
         {
           model: 'gpt-4o-mini',
@@ -152,7 +187,7 @@ export default function Dashboard() {
       )
 
       const assistantReply = renderPromptTemplate(
-        '已收到你的请求：「{{question}}」。\n建议先从「{{focus}}」开始，当前上下文消息 {{contextSize}} 条，配置温度 {{temperature}}。',
+        '已收到你的请求：「{{question}}」。建议先从「{{focus}}」开始，当前上下文消息 {{contextSize}} 条，配置温度 {{temperature}}。',
         {
           question: text,
           focus: topChunks[0]?.content ?? '组件接入',
@@ -171,138 +206,321 @@ export default function Dashboard() {
         },
       ])
       setIsReplying(false)
-    }, 900)
+    }, 800)
   }
 
-  const aiToolTestResult = useMemo(() => {
-    const context = buildMessageContext(
-      messages.map((item) => ({
+  const templateVariables = useMemo(() => {
+    try {
+      const parsed = JSON.parse(templateVarsText) as Record<string, unknown>
+      return {
+        value: parsed,
+        error: '',
+      }
+    } catch {
+      return {
+        value: {} as Record<string, unknown>,
+        error: '变量 JSON 解析失败，请检查格式。',
+      }
+    }
+  }, [templateVarsText])
+
+  const toolResults = useMemo(() => {
+    const contextInput: AIMessage[] = [
+      {
+        role: 'system',
+        content: '你是一个严谨的 AI 产品助手。',
+        createdAt: Date.now() - 3000,
+      },
+      ...messages.map((item) => ({
         role: item.role,
         content: item.content,
         createdAt: item.createdAt,
-      }))
+      })),
+    ]
+
+    const renderedTemplate = renderPromptTemplate(
+      templateText,
+      templateVariables.value as Record<
+        string,
+        string | number | boolean | null | undefined
+      >
     )
 
     return {
-      normalizePrompt: normalizePrompt('  g-ai-ui 是一个 AI 组件库。  '),
-      renderPromptTemplate: renderPromptTemplate('你好，{{name}}', { name: 'Robin' }),
-      contextSize: context.length,
-      topChunks: pickTopScoredChunks(
-        [
-          { id: 'x1', content: 'Bubble 组件说明', score: 0.9 },
-          { id: 'x2', content: 'Sender 组件说明', score: 0.8 },
-          { id: 'x3', content: 'Prompts 组件说明', score: 0.6 },
-        ],
-        2
-      ),
-      modelConfig: mergeModelConfig(
+      normalizePrompt: normalizePrompt(promptInput, {
+        preserveLineBreaks: true,
+        maxLength: 120,
+      }),
+      renderPromptTemplate: templateVariables.error
+        ? templateVariables.error
+        : renderedTemplate,
+      buildMessageContext: buildMessageContext(contextInput, {
+        maxMessages: contextMaxMessages,
+        includeRoles: ['system', 'user', 'assistant'],
+      }),
+      pickTopScoredChunks: pickTopScoredChunks(chunkSeed, topK),
+      mergeModelConfig: mergeModelConfig(
         { model: 'gpt-4o-mini', temperature: 0.7, topP: 1, maxTokens: 2048 },
-        { temperature: 1.1 }
+        { temperature, maxTokens }
       ),
     }
-  }, [messages])
+  }, [
+    contextMaxMessages,
+    maxTokens,
+    messages,
+    promptInput,
+    templateText,
+    templateVariables.error,
+    templateVariables.value,
+    temperature,
+    topK,
+  ])
 
   return (
     <div className="aix-shell min-h-screen">
       <div className="aix-grid" />
+      <div className="aix-glow" />
 
-      <header className="border-b border-white/70 bg-white/70 backdrop-blur-lg">
+      <header className="border-b border-white/70 bg-white/70 backdrop-blur-xl">
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
           <div>
-            <h1 className="text-lg font-semibold text-slate-900">g-ai-ui Playground</h1>
-            <p className="text-xs text-slate-500">Inspired by Ant Design X interaction model</p>
+            <h1 className="text-lg font-semibold tracking-tight text-slate-900">
+              g-ai-ui Playground
+            </h1>
+            <p className="text-xs text-slate-500">
+              Ant Design X inspired interaction lab
+            </p>
           </div>
-          <span className="rounded-full border border-blue-200 bg-blue-50 px-3 py-1 text-xs text-blue-700">
+          <span className="rounded-full border border-blue-200 bg-blue-50 px-3 py-1 text-xs font-medium text-blue-700">
             Next.js + Turbopack
           </span>
         </div>
       </header>
 
       <main className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-        <div className="grid gap-6 lg:grid-cols-[320px_1fr]">
-          <aside className="space-y-4">
-            <Conversations
-              items={conversationSeed.map((item) => ({
-                ...item,
-                time: item.id === activeConversationId ? '当前会话' : '可切换',
-              }))}
-              activeId={activeConversationId}
-              onSelect={setActiveConversationId}
-            />
+        <div className="grid gap-5 lg:grid-cols-[280px_1fr]">
+          <aside className="aix-panel space-y-4 p-4">
+            <div>
+              <p className="aix-kicker">Playground Menu</p>
+              <h2 className="mt-1 text-base font-semibold text-slate-900">
+                联调验证入口
+              </h2>
+              <p className="mt-1 text-xs leading-5 text-slate-500">
+                组件测试与工具测试采用分菜单管理，便于按职责验证迭代改动。
+              </p>
+            </div>
 
-            <Attachments
-              items={attachments}
-              onRemove={(id) =>
-                setAttachments((prev) => prev.filter((item) => item.id !== id))
-              }
-              onRetry={(id) =>
-                setAttachments((prev) =>
-                  prev.map((item) =>
-                    item.id === id ? { ...item, status: 'uploading' } : item
-                  )
+            <nav className="space-y-2">
+              {menuItems.map((item) => {
+                const active = item.key === activeMenu
+                return (
+                  <button
+                    key={item.key}
+                    type="button"
+                    onClick={() => setActiveMenu(item.key)}
+                    className={`aix-menu-btn ${active ? 'is-active' : ''}`}
+                  >
+                    <span className="text-sm font-medium">{item.label}</span>
+                    <span className="mt-1 block text-xs text-slate-500">
+                      {item.description}
+                    </span>
+                  </button>
                 )
-              }
-            />
+              })}
+            </nav>
 
-            <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-[0_10px_30px_rgba(15,23,42,0.08)]">
-              <h3 className="mb-2 text-sm font-semibold text-slate-900">AI 工具函数测试</h3>
-              <pre className="overflow-x-auto rounded-xl bg-slate-900 p-3 text-[11px] text-slate-100">
-                {JSON.stringify(aiToolTestResult, null, 2)}
-              </pre>
+            <div className="rounded-2xl border border-slate-200 bg-slate-50/85 p-3">
+              <p className="text-xs text-slate-500">当前视图</p>
+              <p className="mt-1 text-sm font-semibold text-slate-900">
+                {activeMenu === 'components' ? '组件测试' : '工具测试'}
+              </p>
             </div>
           </aside>
 
-          <section className="space-y-4">
-            <Welcome
-              title="你好，今天想构建什么 AI 体验？"
-              description="从 Prompt 到多轮会话，再到附件与上下文管理，这里展示完整交互链路。"
-              extra={
-                <span className="rounded-lg bg-white/80 px-2 py-1 text-xs text-slate-600">
-                  Conversation: {activeConversationId}
-                </span>
-              }
-            />
-
-            <Prompts
-              items={promptSeed}
-              onSelect={(item) => setDraft(item.title)}
-            />
-
-            <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-[0_10px_30px_rgba(15,23,42,0.08)]">
-              <div className="mb-3 flex items-center justify-between">
-                <h3 className="text-sm font-semibold text-slate-900">Messages</h3>
-                <span className="text-xs text-slate-500">{messages.length} 条</span>
-              </div>
-
-              <div className="max-h-[460px] overflow-y-auto pr-1">
-                {messages.map((item) => (
-                  <Bubble
-                    key={item.id}
-                    role={item.role}
-                    header={item.role === 'user' ? 'Robin' : 'Assistant'}
-                    content={item.content}
-                    footer={new Date(item.createdAt).toLocaleTimeString()}
+          <section>
+            {activeMenu === 'components' ? (
+              <div className="grid gap-5 xl:grid-cols-[320px_1fr]">
+                <aside className="space-y-4">
+                  <Conversations
+                    items={conversationSeed.map((item) => ({
+                      ...item,
+                      time: item.id === activeConversationId ? '当前会话' : '可切换',
+                    }))}
+                    activeId={activeConversationId}
+                    onSelect={setActiveConversationId}
                   />
-                ))}
-                {isReplying && (
-                  <Bubble
-                    role="assistant"
-                    header="Assistant"
-                    content=""
-                    typing
-                    footer="生成中..."
-                  />
-                )}
-              </div>
-            </div>
 
-            <Sender
-              value={draft}
-              onChange={setDraft}
-              onSubmit={handleSend}
-              loading={isReplying}
-              placeholder="输入需求，比如：请输出一个包含 Bubble、Sender、Prompts 的页面方案。"
-            />
+                  <Attachments
+                    items={attachments}
+                    onRemove={(id) =>
+                      setAttachments((prev) => prev.filter((item) => item.id !== id))
+                    }
+                    onRetry={(id) =>
+                      setAttachments((prev) =>
+                        prev.map((item) =>
+                          item.id === id ? { ...item, status: 'uploading' } : item
+                        )
+                      )
+                    }
+                  />
+                </aside>
+
+                <div className="space-y-4">
+                  <Welcome
+                    title="你好，今天想构建什么 AI 体验？"
+                    description="从 Prompt 到多轮会话，再到附件和上下文管理，这里覆盖完整交互链路。"
+                    extra={<span>Conversation: {activeConversationId}</span>}
+                  />
+
+                  <Prompts items={promptSeed} onSelect={(item) => setDraft(item.title)} />
+
+                  <div className="aix-panel p-4">
+                    <div className="mb-3 flex items-center justify-between">
+                      <h3 className="text-sm font-semibold text-slate-900">Messages</h3>
+                      <span className="text-xs text-slate-500">{messages.length} 条</span>
+                    </div>
+
+                    <div className="max-h-[460px] overflow-y-auto pr-1">
+                      {messages.map((item) => (
+                        <Bubble
+                          key={item.id}
+                          role={item.role}
+                          avatar={item.role === 'user' ? 'RB' : 'AI'}
+                          header={item.role === 'user' ? 'Robin' : 'Assistant'}
+                          content={item.content}
+                          footer={new Date(item.createdAt).toLocaleTimeString()}
+                        />
+                      ))}
+                      {isReplying && (
+                        <Bubble
+                          role="assistant"
+                          avatar="AI"
+                          header="Assistant"
+                          content=""
+                          typing
+                          footer="生成中..."
+                        />
+                      )}
+                    </div>
+                  </div>
+
+                  <Sender
+                    value={draft}
+                    onChange={setDraft}
+                    onSubmit={handleSend}
+                    loading={isReplying}
+                    placeholder="输入需求，比如：请给出一个包含 Welcome、Prompts、Sender 的页面方案。"
+                  />
+                </div>
+              </div>
+            ) : (
+              <div className="space-y-4">
+                <Welcome
+                  title="AI 工具函数测试面板"
+                  description="通过参数输入和结果输出，验证工具函数在真实业务中的行为稳定性。"
+                  icon="🧪"
+                  extra={<span>@g-ai-ui/utils</span>}
+                />
+
+                <div className="grid gap-4 lg:grid-cols-2">
+                  <div className="aix-tool-card">
+                    <h3 className="aix-tool-title">normalizePrompt</h3>
+                    <textarea
+                      className="aix-input"
+                      value={promptInput}
+                      onChange={(event) => setPromptInput(event.target.value)}
+                      rows={4}
+                    />
+                    <JsonBlock value={toolResults.normalizePrompt} />
+                  </div>
+
+                  <div className="aix-tool-card">
+                    <h3 className="aix-tool-title">renderPromptTemplate</h3>
+                    <textarea
+                      className="aix-input"
+                      value={templateText}
+                      onChange={(event) => setTemplateText(event.target.value)}
+                      rows={2}
+                    />
+                    <textarea
+                      className="aix-input mt-2"
+                      value={templateVarsText}
+                      onChange={(event) => setTemplateVarsText(event.target.value)}
+                      rows={3}
+                    />
+                    <JsonBlock value={toolResults.renderPromptTemplate} />
+                  </div>
+
+                  <div className="aix-tool-card">
+                    <h3 className="aix-tool-title">buildMessageContext</h3>
+                    <label className="aix-label">
+                      上下文条数
+                      <input
+                        type="number"
+                        min={1}
+                        max={12}
+                        value={contextMaxMessages}
+                        onChange={(event) =>
+                          setContextMaxMessages(Number(event.target.value) || 1)
+                        }
+                        className="aix-number-input"
+                      />
+                    </label>
+                    <JsonBlock value={toolResults.buildMessageContext} />
+                  </div>
+
+                  <div className="aix-tool-card">
+                    <h3 className="aix-tool-title">pickTopScoredChunks</h3>
+                    <label className="aix-label">
+                      TopK
+                      <input
+                        type="number"
+                        min={1}
+                        max={4}
+                        value={topK}
+                        onChange={(event) => setTopK(Number(event.target.value) || 1)}
+                        className="aix-number-input"
+                      />
+                    </label>
+                    <JsonBlock value={toolResults.pickTopScoredChunks} />
+                  </div>
+
+                  <div className="aix-tool-card lg:col-span-2">
+                    <h3 className="aix-tool-title">mergeModelConfig</h3>
+                    <div className="grid gap-3 sm:grid-cols-2">
+                      <label className="aix-label">
+                        temperature
+                        <input
+                          type="number"
+                          step={0.1}
+                          min={0}
+                          max={2}
+                          value={temperature}
+                          onChange={(event) =>
+                            setTemperature(Number(event.target.value) || 0)
+                          }
+                          className="aix-number-input"
+                        />
+                      </label>
+                      <label className="aix-label">
+                        maxTokens
+                        <input
+                          type="number"
+                          min={1}
+                          max={8192}
+                          value={maxTokens}
+                          onChange={(event) =>
+                            setMaxTokens(Number(event.target.value) || 1)
+                          }
+                          className="aix-number-input"
+                        />
+                      </label>
+                    </div>
+                    <JsonBlock value={toolResults.mergeModelConfig} />
+                  </div>
+                </div>
+              </div>
+            )}
           </section>
         </div>
       </main>

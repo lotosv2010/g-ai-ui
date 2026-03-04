@@ -3,7 +3,7 @@ import './globals.css'
 
 export const metadata: Metadata = {
   title: 'g-ai-ui Playground',
-  description: 'AI 组件与工具函数集成验证页面',
+  description: 'Ant Design X 风格的组件测试与工具测试 Playground',
 }
 
 export default function RootLayout({

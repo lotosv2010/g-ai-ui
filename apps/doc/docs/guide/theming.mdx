@@ -5,13 +5,11 @@ order: 4
 
 # 样式定制
 
-`@g-ai-ui/ui` 采用 Tailwind CSS 构建。推荐将样式定制拆分为三层：
+`@g-ai-ui/ui` 默认采用 Ant Design X 风格的浅色卡片体系。推荐将定制拆分为三层。
 
-- 组件调用层：通过 `className` 做局部扩展
-- 项目主题层：在 `tailwind.config` 中维护设计 token
-- 全局策略层：通过 CSS 变量支持品牌主题与模式切换
+## 1. 组件调用层（低成本）
 
-## 1) 组件调用层（最低成本）
+通过 `className` 做局部调整：
 
 ```tsx
 import { Bubble } from '@g-ai-ui/ui'
@@ -27,56 +25,51 @@ export default function Example() {
 }
 ```
 
-适用场景：页面级微调、局部布局适配。
+## 2. 项目主题层（推荐）
 
-## 2) 项目主题层（推荐）
+在 `tailwind.config.js` 中维护 token：
 
-```javascript
-// tailwind.config.js
+```js
 module.exports = {
   theme: {
     extend: {
       colors: {
         brand: {
-          50: '#f5f8ff',
-          100: '#e6edff',
-          500: '#3b82f6',
-          600: '#2563eb',
-          700: '#1d4ed8',
+          500: '#1677ff',
+          600: '#0958d9',
+          accent: '#36cfc9',
         },
       },
       borderRadius: {
-        panel: '14px',
+        panel: '22px',
+      },
+      boxShadow: {
+        panel: '0 18px 45px rgba(15,23,42,0.08)',
       },
     },
   },
 }
 ```
 
-适用场景：统一品牌色、圆角、间距体系。
+## 3. 全局策略层（多主题）
 
-## 3) 全局策略层（主题切换）
+通过 CSS 变量维护品牌策略：
 
 ```css
 :root {
-  --chat-user-bg: #2563eb;
-  --chat-user-text: #ffffff;
-  --chat-ai-bg: #e5e7eb;
-  --chat-ai-text: #111827;
+  --ga-primary: #1677ff;
+  --ga-accent: #36cfc9;
+  --ga-surface: #ffffff;
 }
 
-.theme-dark {
-  --chat-user-bg: #1d4ed8;
-  --chat-user-text: #f8fafc;
-  --chat-ai-bg: #374151;
-  --chat-ai-text: #f3f4f6;
+.theme-enterprise {
+  --ga-primary: #0052cc;
+  --ga-accent: #00b8d9;
 }
 ```
 
-适用场景：多品牌、多主题、多租户。
+## 建议
 
-## 实践建议
-
-- 将颜色、圆角、阴影等关键变量沉淀为 token，避免散落在页面代码中。
-- 避免直接改组件源码优先，先通过外层样式系统完成定制。
-- 在设计评审中明确“组件默认样式”和“业务皮肤样式”的职责边界。
+1. 优先调整 token，不直接修改组件源码。
+2. 先在 Playground 验证对比效果，再回写业务项目。
+3. 视觉变更与交互变更分批提交，降低回归风险。
