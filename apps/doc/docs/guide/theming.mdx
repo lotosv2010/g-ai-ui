@@ -1,0 +1,134 @@
+---
+title: 样式定制
+order: 4
+---
+
+# 样式定制
+
+UI 组件使用 Tailwind CSS 构建，你可以通过多种方式自定义组件样式。
+
+## 通过 className 属性
+
+最简单的方式是通过 `className` 属性传入自定义类名：
+
+```tsx
+import { ChatBubble } from '@g-ai-ui/ui'
+
+export default function Example() {
+  return (
+    <ChatBubble
+      message="自定义样式的消息"
+      isUser={true}
+      className="mb-4 p-4"
+    />
+  )
+}
+```
+
+## 使用 Tailwind 配置
+
+你可以在项目的 Tailwind 配置文件中自定义主题：
+
+```javascript
+// tailwind.config.js
+module.exports = {
+  theme: {
+    extend: {
+      colors: {
+        primary: {
+          50: '#eff6ff',
+          100: '#dbeafe',
+          500: '#3b82f6',
+          600: '#2563eb',
+          700: '#1d4ed8',
+        },
+      },
+    },
+  },
+}
+```
+
+## 全局样式覆盖
+
+在全局样式文件中覆盖默认样式：
+
+```css
+/* globals.css */
+.chat-bubble {
+  border-radius: 12px;
+  padding: 12px 16px;
+}
+
+.chat-bubble.user {
+  background-color: your-custom-color;
+}
+```
+
+## CSS 变量
+
+使用 CSS 变量实现主题切换：
+
+```css
+:root {
+  --chat-bubble-bg: #3b82f6;
+  --chat-bubble-text: #ffffff;
+}
+
+.dark {
+  --chat-bubble-bg: #1d4ed8;
+  --chat-bubble-text: #f0f9ff;
+}
+```
+
+## 深色模式
+
+支持基于类名的深色模式：
+
+```tsx
+import { ChatBubble } from '@g-ai-ui/ui'
+
+export default function Example() {
+  const [isDark, setIsDark] = useState(false)
+
+  return (
+    <div className={isDark ? 'dark' : ''}>
+      <button onClick={() => setIsDark(!isDark)}>
+        切换主题
+      </button>
+      <ChatBubble message="深色模式示例" isUser={true} />
+    </div>
+  )
+}
+```
+
+## 示例：自定义聊天组件样式
+
+```tsx
+import { ChatBubble } from '@g-ai-ui/ui'
+
+export default function StyledChat() {
+  return (
+    <div className="max-w-md">
+      {/* 用户消息 - 自定义蓝色主题 */}
+      <ChatBubble
+        message="这是一条自定义样式的用户消息"
+        isUser={true}
+        className="mb-4"
+      />
+
+      {/* 系统消息 - 自定义灰色主题 */}
+      <ChatBubble
+        message="这是一条自定义样式的系统消息"
+        isUser={false}
+        className="mb-4"
+      />
+    </div>
+  )
+}
+```
+
+## 注意事项
+
+- 组件使用 Tailwind 的 utility classes，确保你的项目中已正确配置 Tailwind CSS
+- 通过 `className` 传入的类名会与默认类名合并
+- 建议使用 Tailwind 的 utility classes 而不是自定义 CSS 类名

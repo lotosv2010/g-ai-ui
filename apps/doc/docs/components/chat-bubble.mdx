@@ -1,0 +1,158 @@
+---
+title: ChatBubble 对话气泡
+---
+
+import { ChatBubble } from '@g-ai-ui/ui'
+
+# ChatBubble 对话气泡
+
+ChatBubble 对话气泡组件用于显示聊天消息，区分用户和 AI 的回复。
+
+## 基础用法
+
+<div className="border border-gray-200 rounded-lg my-4 overflow-hidden">
+  <div className="p-4 bg-white min-h-[100px]">
+    <div className="space-y-2">
+      <ChatBubble
+        message="你好！有什么可以帮助你的吗？"
+        isUser={false}
+        timestamp="10:30"
+      />
+      <ChatBubble
+        message="请介绍一下这个项目"
+        isUser={true}
+        timestamp="10:31"
+      />
+    </div>
+  </div>
+</div>
+
+```tsx 
+import { ChatBubble } from '@g-ai-ui/ui'
+
+export default function ChatBubbleExample() {
+  return (
+    <div className="space-y-2">
+      <ChatBubble
+        message="你好！有什么可以帮助你的吗？"
+        isUser={false}
+        timestamp="10:30"
+      />
+      <ChatBubble
+        message="请介绍一下这个项目"
+        isUser={true}
+        timestamp="10:31"
+      />
+    </div>
+  )
+}
+```
+
+## 用户消息
+
+<div className="border border-gray-200 rounded-lg my-4 overflow-hidden">
+  <div className="p-4 bg-white min-h-[100px]">
+    <ChatBubble
+      message="这是一条用户消息"
+      isUser={true}
+      timestamp="10:30"
+    />
+  </div>
+</div>
+
+```tsx
+<ChatBubble
+  message="这是一条用户消息"
+  isUser={true}
+  timestamp="10:30"
+/>
+```
+
+## AI 消息
+
+<div className="border border-gray-200 rounded-lg my-4 overflow-hidden">
+  <div className="p-4 bg-white min-h-[100px]">
+    <ChatBubble
+      message="这是一条 AI 回复消息"
+      isUser={false}
+      timestamp="10:31"
+    />
+  </div>
+</div>
+
+```tsx
+<ChatBubble
+  message="这是一条 AI 回复消息"
+  isUser={false}
+  timestamp="10:31"
+/>
+```
+
+## 完整示例
+
+<div className="border border-gray-200 rounded-lg my-4 overflow-hidden">
+  <div className="p-4 bg-white min-h-[100px]">
+    <ChatBubble
+      message="你好！"
+      isUser={false}
+      timestamp="10:00"
+    />
+    <ChatBubble
+      message="请问如何使用这个组件？"
+      isUser={true}
+      timestamp="10:01"
+    />
+  </div>
+</div>
+
+```tsx
+import { useState } from 'react'
+import { ChatBubble } from '@g-ai-ui/ui'
+
+interface Message {
+  id: string
+  text: string
+  isUser: boolean
+  timestamp: string
+}
+
+export function ChatExample() {
+  const [messages, setMessages] = useState<Message[]>([
+    {
+      id: '1',
+      text: '你好！',
+      isUser: false,
+      timestamp: '10:00',
+    },
+  ])
+
+  const handleSendMessage = (text: string) => {
+    const newMessage: Message = {
+      id: Date.now().toString(),
+      text,
+      isUser: true,
+      timestamp: new Date().toLocaleTimeString(),
+    }
+    setMessages((prev) => [...prev, newMessage])
+  }
+
+  return (
+    <div className="border rounded-lg p-4">
+      <div className="space-y-2 mb-4">
+        {messages.map((message) => (
+          <ChatBubble
+            key={message.id}
+            message={message.text}
+            isUser={message.isUser}
+            timestamp={message.timestamp}
+          />
+        ))}
+      </div>
+    </div>
+  )
+}
+```
+
+## API
+
+<table><thead><tr><th>属性</th><th>类型</th><th>默认值</th><th>说明</th></tr></thead><tbody><tr><td><code>message</code></td><td><code>string</code></td><td>-</td><td>消息内容（必需）</td></tr><tr><td><code>isUser</code></td><td><code>boolean</code></td><td><code>false</code></td><td>是否为用户消息</td></tr><tr><td><code>timestamp</code></td><td><code>string</code></td><td>-</td><td>时间戳显示</td></tr><tr><td><code>className</code></td><td><code>string</code></td><td><code>""</code></td><td>自定义类名</td></tr></tbody></table>
