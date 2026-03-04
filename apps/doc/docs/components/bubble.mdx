@@ -1,0 +1,54 @@
+---
+title: Bubble
+---
+
+import { Bubble } from '@g-ai-ui/ui'
+
+# Bubble
+
+消息气泡组件，用于渲染用户与助手消息。支持角色、头像、头尾信息以及 typing 状态。
+
+## 示例
+
+<div className="rounded-xl border border-slate-200 bg-slate-50 p-4">
+  <Bubble
+    role="assistant"
+    header="Assistant"
+    content="建议先在 monorepo 内建立组件契约，再推进业务接入。"
+    footer="10:24"
+  />
+  <Bubble
+    role="user"
+    header="Robin"
+    content="请给我一个可执行的拆分方案。"
+    footer="10:25"
+  />
+</div>
+
+```tsx
+import { Bubble } from '@g-ai-ui/ui'
+
+export default function Example() {
+  return (
+    <Bubble
+      role="assistant"
+      header="Assistant"
+      content="建议先在 monorepo 内建立组件契约，再推进业务接入。"
+      footer="10:24"
+    />
+  )
+}
+```
+
+## API
+
+| 属性 | 类型 | 默认值 | 说明 |
+|---|---|---|---|
+| content | `ReactNode` | - | 消息内容 |
+| role | `'assistant' \| 'user' \| 'system'` | `'assistant'` | 消息角色 |
+| placement | `'start' \| 'end'` | 自动推断 | 气泡方向 |
+| avatar | `ReactNode` | - | 头像区域 |
+| header | `ReactNode` | - | 头部信息 |
+| footer | `ReactNode` | - | 底部信息 |
+| typing | `boolean` | `false` | 是否显示输入中状态 |
+| className | `string` | `""` | 自定义样式 |

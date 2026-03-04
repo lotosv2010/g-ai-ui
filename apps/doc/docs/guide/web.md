@@ -20,11 +20,14 @@ pnpm --filter @g-ai-ui/web dev
 
 ## 当前集成能力
 
-### 1. 对话 UI 集成
+### 1. Ant X 风格组件编排
 
-- 使用 `ChatBubble` 渲染消息流
-- 使用 `ChatInput` 处理输入与发送
-- 在页面中模拟基础消息往返流程
+- `Welcome`：首屏引导区
+- `Conversations`：左侧会话列表
+- `Prompts`：快捷提示词网格
+- `Attachments`：附件状态卡片
+- `Bubble`：消息流渲染
+- `Sender`：输入与发送控制
 
 ### 2. AI 工具函数验证
 
@@ -88,3 +91,4 @@ apps/web/
 1. 在 `packages/ui` 或 `packages/utils` 实施改动。  
 2. 在 `apps/web` 观察页面交互与测试区输出。  
 3. 回写文档示例，保持“代码行为”和“文档描述”一致。  
+4. 若涉及交互形态变更，优先参照 `x.ant.design` 的组件范式统一体验语言。  

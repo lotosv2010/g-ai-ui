@@ -1,0 +1,42 @@
+---
+title: Attachments
+---
+
+import { Attachments } from '@g-ai-ui/ui'
+
+# Attachments
+
+附件列表组件，用于展示上传文件、处理状态以及移除/重试操作。
+
+## 示例
+
+<Attachments
+  items={[
+    { id: '1', name: 'prd-v2.md', size: '128 KB', status: 'done' },
+    { id: '2', name: 'qa-report.pdf', size: '2.1 MB', status: 'uploading' },
+    { id: '3', name: 'error-log.txt', size: '9 KB', status: 'error' },
+  ]}
+/>
+
+```tsx
+import { Attachments } from '@g-ai-ui/ui'
+
+export default function Example() {
+  return (
+    <Attachments
+      items={[{ id: '1', name: 'prd-v2.md', status: 'done' }]}
+      onRemove={(id) => console.log('remove', id)}
+      onRetry={(id) => console.log('retry', id)}
+    />
+  )
+}
+```
+
+## API
+
+| 属性 | 类型 | 默认值 | 说明 |
+|---|---|---|---|
+| items | `AttachmentItem[]` | `[]` | 附件列表 |
+| onRemove | `(id: string) => void` | - | 移除回调 |
+| onRetry | `(id: string) => void` | - | 重试回调 |
+| className | `string` | `""` | 自定义样式 |

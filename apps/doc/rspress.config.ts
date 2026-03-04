@@ -65,15 +65,31 @@ export default defineConfig({
       // 组件页面的侧边栏
       '/components/': [
         {
-          text: '对话组件',
+          text: '核心组件',
           items: [
             {
-              text: 'ChatBubble 对话气泡',
-              link: '/components/chat-bubble',
+              text: 'Welcome 欢迎区',
+              link: '/components/welcome',
             },
             {
-              text: 'ChatInput 对话输入',
-              link: '/components/chat-input',
+              text: 'Conversations 会话列表',
+              link: '/components/conversations',
+            },
+            {
+              text: 'Prompts 快捷提示',
+              link: '/components/prompts',
+            },
+            {
+              text: 'Attachments 附件列表',
+              link: '/components/attachments',
+            },
+            {
+              text: 'Bubble 消息气泡',
+              link: '/components/bubble',
+            },
+            {
+              text: 'Sender 输入发送器',
+              link: '/components/sender',
             },
           ],
         },

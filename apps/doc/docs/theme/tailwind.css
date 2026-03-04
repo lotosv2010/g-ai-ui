@@ -1,3 +1,20 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Keep home hero actions in one horizontal row/wrap instead of vertical stack. */
+.rspress-home-hero-tagline + div {
+  display: flex !important;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.rspress-home-hero-tagline + div > div {
+  padding: 0 !important;
+}
+
+.rspress-home-hero-tagline + div a {
+  width: auto !important;
+}

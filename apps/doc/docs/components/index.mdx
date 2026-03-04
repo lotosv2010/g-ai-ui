@@ -2,47 +2,65 @@
 title: 组件列表
 ---
 
-import { ChatBubble, ChatInput } from '@g-ai-ui/ui'
+import {
+  Attachments,
+  Bubble,
+  Conversations,
+  Prompts,
+  Sender,
+  Welcome,
+} from '@g-ai-ui/ui'
 
 # 组件列表
 
-组件层聚焦 AI 对话场景的核心交互原语，强调“可组合、可扩展、低耦合”。
+当前组件体系参照 Ant Design X 的核心交互模型（`Welcome / Conversations / Prompts / Attachments / Bubble / Sender`），用于快速搭建 AI 对话产品的主流程页面。
 
-- [ChatBubble 对话气泡](./chat-bubble.mdx)：负责消息展示与角色语义表达
-- [ChatInput 对话输入](./chat-input.mdx)：负责输入采集与发送行为触发
+## 核心组件
+
+- [Welcome](./welcome.mdx)：欢迎区与场景引导
+- [Conversations](./conversations.mdx)：会话列表与上下文切换
+- [Prompts](./prompts.mdx)：快捷提示词入口
+- [Attachments](./attachments.mdx)：附件状态展示
+- [Bubble](./bubble.mdx)：消息渲染单元
+- [Sender](./sender.mdx)：输入发送器
 
 ## 快速预览
 
-### ChatBubble
+<Welcome
+  title="你好，今天想构建什么 AI 体验？"
+  description="你可以直接选择提示词，也可以在 Sender 中输入具体任务。"
+/>
 
-<div className="border border-gray-200 rounded-lg my-4 overflow-hidden">
-  <div className="p-4 bg-white min-h-[100px]">
-    <div className="space-y-2">
-      <ChatBubble
-        message="你好，我可以帮助你完成组件接入。"
-        isUser={false}
-        timestamp="10:30"
-      />
-      <ChatBubble
-        message="请给我一个最小可运行示例。"
-        isUser={true}
-        timestamp="10:31"
-      />
-    </div>
-  </div>
+<div className="grid gap-3 md:grid-cols-2 my-4">
+  <Conversations
+    items={[
+      { id: '1', title: '产品文档问答', description: '最近更新：2 分钟前', unread: 2, pinned: true },
+      { id: '2', title: '多轮客服机器人', description: '最近更新：昨天 20:18' },
+    ]}
+    activeId="1"
+  />
+  <Prompts
+    items={[
+      { id: 'a', title: '生成发布公告', description: '根据本次迭代摘要自动生成版本公告' },
+      { id: 'b', title: '输出接口契约', description: '从组件 props 推导 API 文档' },
+      { id: 'c', title: '代码审查建议', description: '聚焦可维护性和边界条件' },
+    ]}
+  />
 </div>
 
-### ChatInput
-
-<div className="border border-gray-200 rounded-lg my-4 overflow-hidden">
-  <div className="p-4 bg-white min-h-[100px]">
-    <ChatInput
-      onSend={(message) => console.log('发送消息:', message)}
-      placeholder="请输入问题..."
-    />
-  </div>
+<div className="rounded-xl border border-slate-200 bg-slate-50 p-4 my-4">
+  <Bubble
+    role="assistant"
+    header="Assistant"
+    footer="10:24"
+    content="我建议你先定义组件边界，再补充联调示例。"
+  />
+  <Sender onSubmit={() => {}} placeholder="输入问题并发送..." />
 </div>
 
-## 说明
-
-详细 API、边界行为和完整示例，请进入各组件文档查看。
+<Attachments
+  items={[
+    { id: 'f1', name: 'prd-v2.md', size: '128 KB', status: 'done' },
+    { id: 'f2', name: 'qa-report.pdf', size: '2.1 MB', status: 'uploading' },
+  ]}
+/>

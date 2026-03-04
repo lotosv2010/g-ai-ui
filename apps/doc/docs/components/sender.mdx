@@ -1,0 +1,44 @@
+---
+title: Sender
+---
+
+import { Sender } from '@g-ai-ui/ui'
+
+# Sender
+
+输入发送器组件，支持多行输入、快捷键发送、长度控制、扩展操作位。
+
+## 示例
+
+<Sender onSubmit={(message) => console.log('发送:', message)} placeholder="输入你的问题..." />
+
+```tsx
+import { Sender } from '@g-ai-ui/ui'
+
+export default function Example() {
+  return (
+    <Sender
+      onSubmit={(message) => console.log(message)}
+      placeholder="输入你的问题..."
+      maxLength={1000}
+    />
+  )
+}
+```
+
+## API
+
+| 属性 | 类型 | 默认值 | 说明 |
+|---|---|---|---|
+| onSubmit | `(message: string) => void` | - | 发送回调（必需） |
+| value | `string` | - | 受控值 |
+| defaultValue | `string` | `""` | 非受控默认值 |
+| onChange | `(value: string) => void` | - | 输入变化回调 |
+| placeholder | `string` | 内置文案 | 占位文案 |
+| disabled | `boolean` | `false` | 是否禁用 |
+| loading | `boolean` | `false` | 是否展示发送中 |
+| maxLength | `number` | `2000` | 最大输入长度 |
+| prefix | `ReactNode` | - | 顶部左侧扩展位 |
+| suffix | `ReactNode` | - | 底部扩展位 |
+| submitLabel | `string` | `"发送"` | 发送按钮文案 |
+| className | `string` | `""` | 自定义样式 |

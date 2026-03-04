@@ -1,0 +1,43 @@
+---
+title: Conversations
+---
+
+import { Conversations } from '@g-ai-ui/ui'
+
+# Conversations
+
+会话列表组件，用于展示历史会话、未读状态与当前激活会话。
+
+## 示例
+
+<Conversations
+  items={[
+    { id: '1', title: '产品文档问答', description: '最近更新：2 分钟前', unread: 3, pinned: true },
+    { id: '2', title: '客服机器人评审', description: '最近更新：昨天 20:18' },
+    { id: '3', title: '代码解释助手', description: '最近更新：周一 09:42' },
+  ]}
+  activeId="1"
+/>
+
+```tsx
+import { Conversations } from '@g-ai-ui/ui'
+
+const items = [
+  { id: '1', title: '产品文档问答', unread: 3, pinned: true },
+  { id: '2', title: '客服机器人评审' },
+]
+
+export default function Example() {
+  return <Conversations items={items} activeId="1" onSelect={(id) => console.log(id)} />
+}
+```
+
+## API
+
+| 属性 | 类型 | 默认值 | 说明 |
+|---|---|---|---|
+| items | `ConversationItem[]` | `[]` | 会话列表 |
+| activeId | `string` | - | 当前激活会话 ID |
+| onSelect | `(id: string) => void` | - | 选择会话回调 |
+| onCreate | `() => void` | - | 新建会话回调 |
+| className | `string` | `""` | 自定义样式 |

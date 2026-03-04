@@ -2,7 +2,34 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --aix-bg-1: #f4f8ff;
+  --aix-bg-2: #ecfeff;
+  --aix-bg-3: #f8fafc;
+  --aix-grid: rgba(148, 163, 184, 0.2);
+}
+
 body {
   margin: 0;
   padding: 0;
+  font-family: 'SF Pro Display', 'Avenir Next', 'Segoe UI', 'PingFang SC',
+    'Hiragino Sans GB', sans-serif;
+  color: #0f172a;
+}
+
+.aix-shell {
+  background: radial-gradient(circle at 0% 0%, var(--aix-bg-2) 0%, var(--aix-bg-1) 40%, var(--aix-bg-3) 100%);
+  position: relative;
+}
+
+.aix-grid {
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(to right, var(--aix-grid) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--aix-grid) 1px, transparent 1px);
+  background-size: 36px 36px;
+  mask-image: radial-gradient(circle at 50% 20%, black, transparent 75%);
+  opacity: 0.35;
 }

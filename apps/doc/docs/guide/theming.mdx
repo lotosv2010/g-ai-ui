@@ -14,13 +14,13 @@ order: 4
 ## 1) 组件调用层（最低成本）
 
 ```tsx
-import { ChatBubble } from '@g-ai-ui/ui'
+import { Bubble } from '@g-ai-ui/ui'
 
 export default function Example() {
   return (
-    <ChatBubble
-      message="已接收请求，正在生成处理方案。"
-      isUser={false}
+    <Bubble
+      role="assistant"
+      content="已接收请求，正在生成处理方案。"
       className="mb-3"
     />
   )

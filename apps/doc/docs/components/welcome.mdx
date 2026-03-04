@@ -1,0 +1,40 @@
+---
+title: Welcome
+---
+
+import { Welcome } from '@g-ai-ui/ui'
+
+# Welcome
+
+欢迎区组件，用于承载产品定位、引导文案和首屏操作入口。
+
+## 示例
+
+<Welcome
+  title="你好，欢迎使用 g-ai-ui"
+  description="面向 AI 场景的组件库，帮助你快速构建会话产品。"
+  extra={<button className="rounded-lg bg-blue-500 px-3 py-1.5 text-xs text-white">开始对话</button>}
+/>
+
+```tsx
+import { Welcome } from '@g-ai-ui/ui'
+
+export default function Example() {
+  return (
+    <Welcome
+      title="你好，欢迎使用 g-ai-ui"
+      description="面向 AI 场景的组件库，帮助你快速构建会话产品。"
+    />
+  )
+}
+```
+
+## API
+
+| 属性 | 类型 | 默认值 | 说明 |
+|---|---|---|---|
+| title | `string` | - | 标题 |
+| description | `string` | - | 描述文案 |
+| icon | `ReactNode` | `✦` | 标题图标 |
+| extra | `ReactNode` | - | 右侧扩展区域 |
+| className | `string` | `""` | 自定义样式 |

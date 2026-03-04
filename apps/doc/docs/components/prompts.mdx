@@ -1,0 +1,41 @@
+---
+title: Prompts
+---
+
+import { Prompts } from '@g-ai-ui/ui'
+
+# Prompts
+
+快捷提示词组件，用于首屏引导或场景化推荐，减少空输入成本。
+
+## 示例
+
+<Prompts
+  items={[
+    { id: 'a', title: '生成迭代周报', description: '基于提交记录和 issue 输出总结' },
+    { id: 'b', title: '产出测试用例', description: '根据组件 props 生成边界测试' },
+    { id: 'c', title: '重构建议', description: '面向可维护性给出拆分方案' },
+    { id: 'd', title: '代码注释规范', description: '补齐关键逻辑注释与文档' },
+  ]}
+/>
+
+```tsx
+import { Prompts } from '@g-ai-ui/ui'
+
+export default function Example() {
+  return (
+    <Prompts
+      items={[{ id: 'a', title: '生成迭代周报' }]}
+      onSelect={(item) => console.log(item.title)}
+    />
+  )
+}
+```
+
+## API
+
+| 属性 | 类型 | 默认值 | 说明 |
+|---|---|---|---|
+| items | `PromptItem[]` | `[]` | 提示词列表 |
+| onSelect | `(item: PromptItem) => void` | - | 选择回调 |
+| className | `string` | `""` | 自定义样式 |
