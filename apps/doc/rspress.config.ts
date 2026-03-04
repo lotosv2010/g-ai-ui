@@ -1,8 +1,8 @@
 import { defineConfig } from 'rspress/config'
 
 export default defineConfig({
-  title: 'Turborepo ui',
-  description: '一个现代化的组件库演示项目',
+  title: 'g-ai-ui',
+  description: '面向 AI 场景的 React 组件与工具函数体系',
   icon: '/rspress-icon.svg',
   lang: 'zh-CN',
   markdown: {
@@ -16,17 +16,21 @@ export default defineConfig({
         link: '/',
       },
       {
-        text: '指南',
+        text: '快速开始',
         link: '/guide/getting-started',
       },
       {
-        text: '组件',
+        text: '组件能力',
         link: '/components/',
         activeMatch: '^/components/',
       },
       {
-        text: '更多',
+        text: '工程实践',
         items: [
+          {
+            text: '工具函数',
+            link: '/guide/utils',
+          },
           {
             text: '主题定制',
             link: '/guide/theming',
@@ -43,18 +47,18 @@ export default defineConfig({
       // 指南页面的侧边栏
       '/guide/': [
         {
-          text: '开始使用',
+          text: '项目接入',
           items: [
             '/guide/getting-started',
           ],
         },
         {
-          text: '深入指南',
+          text: '能力与实践',
           items: [
             '/guide/components',
             '/guide/utils',
-            '/guide/theming',
             '/guide/web',
+            '/guide/theming',
           ],
         },
       ],

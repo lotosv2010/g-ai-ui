@@ -1,6 +1,16 @@
 {
   "name": "@g-ai-ui/ui",
   "version": "0.0.0",
+  "author": "Robin <lotosv2010@163.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lotosv2010/g-ai-ui.git"
+  },
+  "bugs": {
+    "url": "https://github.com/lotosv2010/g-ai-ui/issues"
+  },
+  "homepage": "https://github.com/lotosv2010/g-ai-ui#readme",
   "private": true,
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
@@ -25,14 +35,14 @@
   "dependencies": {
     "@g-ai-ui/utils": "workspace:*"
   },
-"devDependencies": {
-  "@types/node": "^20.11.0",
-  "@types/react": "^18.2.0",
-  "@types/react-dom": "^18.2.0",
-  "autoprefixer": "^10.4.16",
-  "postcss": "^8.4.32",
-  "tailwindcss": "^3.4.0",
-  "tsup": "^8.0.0",
-  "typescript": "^5.9.3"
-}
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "autoprefixer": "^10.4.16",
+    "postcss": "^8.4.32",
+    "tailwindcss": "^3.4.0",
+    "tsup": "^8.0.0",
+    "typescript": "^5.9.3"
+  }
 }

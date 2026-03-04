@@ -2,6 +2,16 @@
   "name": "g-ai-ui",
   "version": "1.0.0",
   "description": "Turborepo + pnpm demo project",
+  "author": "Robin <lotosv2010@163.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lotosv2010/g-ai-ui.git"
+  },
+  "bugs": {
+    "url": "https://github.com/lotosv2010/g-ai-ui/issues"
+  },
+  "homepage": "https://github.com/lotosv2010/g-ai-ui#readme",
   "private": true,
   "packageManager": "pnpm@10.14.0",
   "scripts": {

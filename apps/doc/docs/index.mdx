@@ -1,39 +1,40 @@
 ---
 pageType: home
-title: Turborepo ui
-titleSuffix: '一个现代化的组件库演示项目'
-
-
+title: g-ai-ui
+titleSuffix: 'AI 前端组件与工程化文档'
 
 hero:
-  name: Turborepo ui
-  text: 一个现代化的组件库演示项目
-  tagline: 基于 Turborepo 构建的 Monorepo 项目
+  name: g-ai-ui
+  text: 面向 AI 场景的 React 组件与工具函数体系
+  tagline: 基于 Turborepo 的 monorepo 架构，统一管理组件、工具函数、文档与集成验证
   actions:
-    - text: 开始使用
+    - text: 快速开始
       link: /guide/getting-started
       theme: primary
-    - text: 在 GitHub 查看
-      link: https://github.com/example/turborepo-demo
+    - text: 浏览组件
+      link: /components/
+      theme: default
+    - text: GitHub
+      link: https://github.com/lotosv2010/g-ai-ui
       theme: default
 
 features:
-  - title: 🚀 高性能
-    details: 使用 Turborepo 实现增量构建和缓存优化，大幅提升开发效率
-    icon: 🚀
-  - title: 💡 TypeScript
-    details: 全栈 TypeScript 类型支持，提供优秀的开发体验和类型安全
-    icon: 💡
-  - title: 🎨 React 组件
-    details: 现代化的 React 组件库，支持多种主题和样式定制
-    icon: 🎨
-  - title: 📦 多种打包格式
-    details: 支持 ESM、CJS 和 IIFE 格式，满足不同使用场景
-    icon: 📦
-  - title: 🔧 工具函数
-    details: 内置常用工具函数，提升开发效率
-    icon:  🔧
-  - title: 🌟 现代工具链
-    details: 使用 tsup、Turbopack 等现代工具链
-    icon: 🌟
+  - title: 工程化 Monorepo
+    details: 使用 Turborepo + pnpm workspace，统一依赖、任务编排与增量构建策略。
+    icon: 🏗️
+  - title: AI 对话组件
+    details: 提供 ChatBubble 与 ChatInput，覆盖对话展示与输入的核心交互单元。
+    icon: 💬
+  - title: AI 工具函数
+    details: 基于 es-toolkit 封装 Prompt 规范化、上下文窗口、检索 TopK、模型参数合并等能力。
+    icon: 🧠
+  - title: TypeScript First
+    details: 所有包默认提供类型定义，保障跨包协作中的 API 一致性与可维护性。
+    icon: 🧩
+  - title: 可集成验证
+    details: Web 应用内置工具函数测试区，可直接验证工具函数在真实页面中的行为。
+    icon: ✅
+  - title: 文档即规范
+    details: 通过 Rspress 输出统一文档，沉淀组件接口、使用约束与工程实践。
+    icon: 📚
 ---

@@ -5,11 +5,13 @@ order: 4
 
 # 样式定制
 
-UI 组件使用 Tailwind CSS 构建，你可以通过多种方式自定义组件样式。
+`@g-ai-ui/ui` 采用 Tailwind CSS 构建。推荐将样式定制拆分为三层：
 
-## 通过 className 属性
+- 组件调用层：通过 `className` 做局部扩展
+- 项目主题层：在 `tailwind.config` 中维护设计 token
+- 全局策略层：通过 CSS 变量支持品牌主题与模式切换
 
-最简单的方式是通过 `className` 属性传入自定义类名：
+## 1) 组件调用层（最低成本）
 
 ```tsx
 import { ChatBubble } from '@g-ai-ui/ui'
@@ -17,17 +19,17 @@ import { ChatBubble } from '@g-ai-ui/ui'
 export default function Example() {
   return (
     <ChatBubble
-      message="自定义样式的消息"
-      isUser={true}
-      className="mb-4 p-4"
+      message="已接收请求，正在生成处理方案。"
+      isUser={false}
+      className="mb-3"
     />
   )
 }
 ```
 
-## 使用 Tailwind 配置
+适用场景：页面级微调、局部布局适配。
 
-你可以在项目的 Tailwind 配置文件中自定义主题：
+## 2) 项目主题层（推荐）
 
 ```javascript
 // tailwind.config.js
@@ -35,100 +37,46 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: {
-          50: '#eff6ff',
-          100: '#dbeafe',
+        brand: {
+          50: '#f5f8ff',
+          100: '#e6edff',
           500: '#3b82f6',
           600: '#2563eb',
           700: '#1d4ed8',
         },
+      },
+      borderRadius: {
+        panel: '14px',
       },
     },
   },
 }
 ```
 
-## 全局样式覆盖
+适用场景：统一品牌色、圆角、间距体系。
 
-在全局样式文件中覆盖默认样式：
-
-```css
-/* globals.css */
-.chat-bubble {
-  border-radius: 12px;
-  padding: 12px 16px;
-}
-
-.chat-bubble.user {
-  background-color: your-custom-color;
-}
-```
-
-## CSS 变量
-
-使用 CSS 变量实现主题切换：
+## 3) 全局策略层（主题切换）
 
 ```css
 :root {
-  --chat-bubble-bg: #3b82f6;
-  --chat-bubble-text: #ffffff;
+  --chat-user-bg: #2563eb;
+  --chat-user-text: #ffffff;
+  --chat-ai-bg: #e5e7eb;
+  --chat-ai-text: #111827;
 }
 
-.dark {
-  --chat-bubble-bg: #1d4ed8;
-  --chat-bubble-text: #f0f9ff;
-}
-```
-
-## 深色模式
-
-支持基于类名的深色模式：
-
-```tsx
-import { ChatBubble } from '@g-ai-ui/ui'
-
-export default function Example() {
-  const [isDark, setIsDark] = useState(false)
-
-  return (
-    <div className={isDark ? 'dark' : ''}>
-      <button onClick={() => setIsDark(!isDark)}>
-        切换主题
-      </button>
-      <ChatBubble message="深色模式示例" isUser={true} />
-    </div>
-  )
+.theme-dark {
+  --chat-user-bg: #1d4ed8;
+  --chat-user-text: #f8fafc;
+  --chat-ai-bg: #374151;
+  --chat-ai-text: #f3f4f6;
 }
 ```
 
-## 示例：自定义聊天组件样式
+适用场景：多品牌、多主题、多租户。
 
-```tsx
-import { ChatBubble } from '@g-ai-ui/ui'
+## 实践建议
 
-export default function StyledChat() {
-  return (
-    <div className="max-w-md">
-      {/* 用户消息 - 自定义蓝色主题 */}
-      <ChatBubble
-        message="这是一条自定义样式的用户消息"
-        isUser={true}
-        className="mb-4"
-      />
-
-      {/* 系统消息 - 自定义灰色主题 */}
-      <ChatBubble
-        message="这是一条自定义样式的系统消息"
-        isUser={false}
-        className="mb-4"
-      />
-    </div>
-  )
-}
-```
-
-## 注意事项
-
-- 组件使用 Tailwind 的 utility classes，确保你的项目中已正确配置 Tailwind CSS
-- 通过 `className` 传入的类名会与默认类名合并
-- 建议使用 Tailwind 的 utility classes 而不是自定义 CSS 类名
+- 将颜色、圆角、阴影等关键变量沉淀为 token，避免散落在页面代码中。
+- 避免直接改组件源码优先，先通过外层样式系统完成定制。
+- 在设计评审中明确“组件默认样式”和“业务皮肤样式”的职责边界。

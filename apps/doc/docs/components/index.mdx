@@ -4,30 +4,27 @@ title: 组件列表
 
 import { ChatBubble, ChatInput } from '@g-ai-ui/ui'
 
-
 # 组件列表
 
-本部分包含了组件库中所有可用组件的文档。
+组件层聚焦 AI 对话场景的核心交互原语，强调“可组合、可扩展、低耦合”。
 
-- [ChatBubble 对话气泡](./chat-bubble.mdx) - 对话气泡组件
-- [ChatInput 对话输入](./chat-input.mdx) - 对话输入框组件
+- [ChatBubble 对话气泡](./chat-bubble.mdx)：负责消息展示与角色语义表达
+- [ChatInput 对话输入](./chat-input.mdx)：负责输入采集与发送行为触发
 
 ## 快速预览
 
-### ChatBubble 对话气泡
-
-用于显示聊天消息，区分用户和 AI 的回复。
+### ChatBubble
 
 <div className="border border-gray-200 rounded-lg my-4 overflow-hidden">
   <div className="p-4 bg-white min-h-[100px]">
     <div className="space-y-2">
       <ChatBubble
-        message="你好！有什么可以帮助你的吗？"
+        message="你好，我可以帮助你完成组件接入。"
         isUser={false}
         timestamp="10:30"
       />
       <ChatBubble
-        message="请介绍一下这个项目"
+        message="请给我一个最小可运行示例。"
         isUser={true}
         timestamp="10:31"
       />
@@ -35,19 +32,17 @@ import { ChatBubble, ChatInput } from '@g-ai-ui/ui'
   </div>
 </div>
 
-### ChatInput 对话输入
-
-用于输入和发送聊天消息。
+### ChatInput
 
 <div className="border border-gray-200 rounded-lg my-4 overflow-hidden">
   <div className="p-4 bg-white min-h-[100px]">
     <ChatInput
       onSend={(message) => console.log('发送消息:', message)}
-      placeholder="请输入消息..."
+      placeholder="请输入问题..."
     />
   </div>
 </div>
 
-## 更多示例
+## 说明
 
-查看各个组件的详细文档以获取更多使用示例和 API 说明。
+详细 API、边界行为和完整示例，请进入各组件文档查看。

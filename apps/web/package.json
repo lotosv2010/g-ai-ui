@@ -1,6 +1,16 @@
 {
   "name": "@g-ai-ui/web",
   "version": "0.0.0",
+  "author": "Robin <lotosv2010@163.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lotosv2010/g-ai-ui.git"
+  },
+  "bugs": {
+    "url": "https://github.com/lotosv2010/g-ai-ui/issues"
+  },
+  "homepage": "https://github.com/lotosv2010/g-ai-ui#readme",
   "private": true,
   "scripts": {
     "dev": "next dev --turbo --port 3010",
