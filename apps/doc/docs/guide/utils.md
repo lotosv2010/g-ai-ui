@@ -1,4 +1,4 @@
----
+﻿---
 title: 工具函数
 order: 2
 ---
@@ -85,4 +85,4 @@ const config = mergeModelConfig(
 
 ## 验证建议
 
-优先在 `@g-ai-ui/web` 的 `工具测试` 菜单中验证这些函数，再将其接入业务服务链路。
+优先在 `@g-ai-ui/web` 的 `/tools` 路由验证这些函数，再将其接入业务服务链路。

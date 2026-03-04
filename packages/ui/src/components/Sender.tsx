@@ -59,16 +59,17 @@ export const Sender: React.FC<SenderProps> = ({
 
   return (
     <div
-      className={`rounded-[22px] border border-slate-200/80 bg-white/90 p-4 shadow-[0_18px_45px_rgba(15,23,42,0.08)] backdrop-blur ${className}`}
+      className={`relative overflow-hidden rounded-[26px] border border-slate-200/80 bg-white/90 p-4 shadow-[0_22px_52px_rgba(15,23,42,0.1)] backdrop-blur-xl ${className}`}
     >
-      <div className="mb-3 flex items-center justify-between text-xs text-slate-500">
+      <div className="pointer-events-none absolute -bottom-12 right-6 h-24 w-24 rounded-full bg-cyan-200/35 blur-2xl" />
+      <div className="relative z-[1] mb-3 flex items-center justify-between text-xs text-slate-500">
         <div className="inline-flex items-center gap-2">
-          <span className="rounded-full border border-blue-200 bg-blue-50 px-2.5 py-1 font-medium text-blue-600">
+          <span className="rounded-full border border-blue-200/80 bg-[linear-gradient(145deg,#eff6ff_0%,#ecfeff_100%)] px-2.5 py-1 font-medium text-blue-700">
             AI Sender
           </span>
           {prefix}
         </div>
-        <span className="rounded-full bg-slate-100 px-2 py-1">
+        <span className="rounded-full border border-slate-200 bg-slate-50/90 px-2 py-1 font-medium">
           {currentValue.length}/{maxLength}
         </span>
       </div>
@@ -86,22 +87,22 @@ export const Sender: React.FC<SenderProps> = ({
         placeholder={placeholder}
         disabled={disabled}
         rows={3}
-        className="w-full resize-none rounded-2xl border border-slate-200 bg-[linear-gradient(180deg,#f8fafc_0%,#ffffff_100%)] px-4 py-3 text-sm text-slate-800 placeholder:text-slate-400 transition focus:border-blue-300 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-100 disabled:cursor-not-allowed disabled:opacity-60"
+        className="relative z-[1] w-full resize-none rounded-2xl border border-slate-200 bg-[linear-gradient(180deg,#f8fafc_0%,#ffffff_100%)] px-4 py-3 text-sm text-slate-800 placeholder:text-slate-400 transition focus:border-blue-300 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-100 disabled:cursor-not-allowed disabled:opacity-60"
       />
 
-      <div className="mt-3 flex items-center justify-between">
+      <div className="relative z-[1] mt-3 flex items-center justify-between">
         <div className="inline-flex items-center gap-2 text-xs text-slate-500">
           <button
             type="button"
             disabled={disabled}
-            className="rounded-xl border border-slate-200 bg-white px-2.5 py-1.5 transition hover:border-blue-200 hover:text-blue-600 disabled:cursor-not-allowed"
+            className="rounded-xl border border-slate-200 bg-white/95 px-2.5 py-1.5 transition hover:border-blue-200 hover:text-blue-600 disabled:cursor-not-allowed"
           >
             + 附件
           </button>
           <button
             type="button"
             disabled={disabled}
-            className="rounded-xl border border-slate-200 bg-white px-2.5 py-1.5 transition hover:border-blue-200 hover:text-blue-600 disabled:cursor-not-allowed"
+            className="rounded-xl border border-slate-200 bg-white/95 px-2.5 py-1.5 transition hover:border-blue-200 hover:text-blue-600 disabled:cursor-not-allowed"
           >
             / 指令
           </button>
@@ -112,7 +113,7 @@ export const Sender: React.FC<SenderProps> = ({
           type="button"
           onClick={handleSubmit}
           disabled={!canSubmit}
-          className="inline-flex items-center gap-2 rounded-xl bg-[linear-gradient(135deg,#1677ff_0%,#36cfc9_100%)] px-4 py-2 text-sm font-medium text-white shadow-[0_10px_24px_rgba(22,119,255,0.28)] transition hover:brightness-105 disabled:cursor-not-allowed disabled:bg-slate-300 disabled:shadow-none"
+          className="inline-flex items-center gap-2 rounded-xl border border-blue-300/60 bg-[linear-gradient(135deg,#2563eb_0%,#0891b2_100%)] px-4 py-2 text-sm font-medium text-white shadow-[0_12px_26px_rgba(37,99,235,0.28)] transition hover:-translate-y-0.5 hover:brightness-105 disabled:cursor-not-allowed disabled:border-slate-200 disabled:bg-slate-300 disabled:shadow-none"
         >
           {loading ? '发送中...' : submitLabel}
         </button>

@@ -1,24 +1,29 @@
-@tailwind base;
+﻿@tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  --aix-primary: #1677ff;
-  --aix-cyan: #36cfc9;
-  --aix-bg-1: #f4f7ff;
-  --aix-bg-2: #eef6ff;
-  --aix-bg-3: #f7fbff;
-  --aix-grid: rgba(148, 163, 184, 0.18);
+  --aix-primary: #2563eb;
+  --aix-cyan: #0891b2;
+  --aix-bg-1: #f3f7ff;
+  --aix-bg-2: #eef4ff;
+  --aix-bg-3: #f2fbff;
+  --aix-grid: rgba(148, 163, 184, 0.16);
 }
 
 * {
   box-sizing: border-box;
 }
 
+*::selection {
+  background: rgba(37, 99, 235, 0.2);
+}
+
 body {
   margin: 0;
   padding: 0;
   color: #0f172a;
+  background: #f7faff;
   font-family: 'Plus Jakarta Sans', 'Avenir Next', 'SF Pro Display',
     'PingFang SC', 'Hiragino Sans GB', 'Segoe UI', sans-serif;
 }
@@ -26,9 +31,9 @@ body {
 .aix-shell {
   position: relative;
   background:
-    radial-gradient(circle at 0% 0%, #ecf5ff 0%, transparent 50%),
-    radial-gradient(circle at 100% 10%, #ebfffb 0%, transparent 46%),
-    linear-gradient(160deg, var(--aix-bg-1) 0%, var(--aix-bg-2) 55%, var(--aix-bg-3) 100%);
+    radial-gradient(circle at 0% 0%, #e9f2ff 0%, transparent 48%),
+    radial-gradient(circle at 100% 10%, #e7fcff 0%, transparent 46%),
+    linear-gradient(162deg, var(--aix-bg-1) 0%, var(--aix-bg-2) 50%, var(--aix-bg-3) 100%);
 }
 
 .aix-grid {
@@ -38,8 +43,8 @@ body {
   background-image:
     linear-gradient(to right, var(--aix-grid) 1px, transparent 1px),
     linear-gradient(to bottom, var(--aix-grid) 1px, transparent 1px);
-  background-size: 34px 34px;
-  mask-image: radial-gradient(circle at 50% 20%, black, transparent 72%);
+  background-size: 36px 36px;
+  mask-image: radial-gradient(circle at 50% 24%, black, transparent 70%);
   opacity: 0.34;
 }
 
@@ -47,66 +52,73 @@ body {
   pointer-events: none;
   position: fixed;
   inset: -20% -10% auto;
-  height: 360px;
+  height: 340px;
   background: radial-gradient(
     ellipse at top,
-    rgba(22, 119, 255, 0.2) 0%,
-    rgba(54, 207, 201, 0.12) 25%,
-    transparent 62%
+    rgba(37, 99, 235, 0.2) 0%,
+    rgba(8, 145, 178, 0.12) 32%,
+    transparent 65%
   );
 }
 
 .aix-panel {
-  border-radius: 22px;
-  border: 1px solid rgba(226, 232, 240, 0.9);
+  border-radius: 24px;
+  border: 1px solid rgba(226, 232, 240, 0.92);
   background: rgba(255, 255, 255, 0.9);
-  box-shadow: 0 18px 45px rgba(15, 23, 42, 0.08);
-  backdrop-filter: blur(6px);
+  box-shadow: 0 22px 54px rgba(15, 23, 42, 0.1);
+  backdrop-filter: blur(9px);
 }
 
 .aix-kicker {
   font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.1em;
+  font-weight: 700;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--aix-primary);
 }
 
-.aix-menu-btn {
+.aix-route-link {
+  display: block;
   width: 100%;
   border-radius: 16px;
   border: 1px solid #e2e8f0;
   background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
-  padding: 10px 12px;
-  text-align: left;
-  color: #0f172a;
+  padding: 11px 12px;
+  text-decoration: none;
   transition: all 180ms ease;
 }
 
-.aix-menu-btn:hover {
+.aix-route-link:hover {
   border-color: #bfdbfe;
   transform: translateY(-1px);
-  box-shadow: 0 10px 20px rgba(22, 119, 255, 0.12);
+  box-shadow: 0 11px 22px rgba(37, 99, 235, 0.13);
 }
 
-.aix-menu-btn.is-active {
+.aix-route-link.is-active {
   border-color: #93c5fd;
   background: linear-gradient(135deg, #f8fbff 0%, #eef6ff 100%);
-  box-shadow: 0 14px 26px rgba(22, 119, 255, 0.18);
+  box-shadow: 0 14px 26px rgba(37, 99, 235, 0.18);
+}
+
+.aix-route-current {
+  border-radius: 16px;
+  border: 1px solid #e2e8f0;
+  background: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
+  padding: 11px;
 }
 
 .aix-tool-card {
-  border-radius: 20px;
+  border-radius: 22px;
   border: 1px solid rgba(226, 232, 240, 0.95);
   background: rgba(255, 255, 255, 0.9);
   padding: 14px;
-  box-shadow: 0 15px 35px rgba(15, 23, 42, 0.08);
+  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.09);
 }
 
 .aix-tool-title {
   margin: 0 0 10px;
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 700;
   color: #0f172a;
 }
 
@@ -136,7 +148,7 @@ body {
 
 .aix-input:focus {
   border-color: #93c5fd;
-  box-shadow: 0 0 0 2px rgba(22, 119, 255, 0.1);
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.1);
 }
 
 .aix-number-input {
@@ -159,8 +171,8 @@ body {
   max-height: 280px;
   overflow: auto;
   border-radius: 14px;
-  border: 1px solid #dae2ee;
-  background: #0f172a;
+  border: 1px solid #cbd5e1;
+  background: linear-gradient(180deg, #0b1221 0%, #111c30 100%);
   padding: 10px;
   font-size: 11px;
   line-height: 1.6;
@@ -173,6 +185,6 @@ body {
   }
 
   .aix-glow {
-    height: 280px;
+    height: 260px;
   }
 }

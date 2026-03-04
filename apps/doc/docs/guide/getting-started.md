@@ -1,11 +1,11 @@
----
+﻿---
 title: 快速开始
 order: 1
 ---
 
 # 快速开始
 
-本指南帮助你在本地启动 `g-ai-ui` monorepo，并快速进入组件和工具函数联调流程。
+本指南帮助你在本地启动 `g-ai-ui` monorepo，并快速进入组件与工具函数联调流程。
 
 ## 环境要求
 
@@ -58,6 +58,6 @@ pnpm --filter @g-ai-ui/utils typecheck
 
 ## 推荐入口
 
-1. 先在 Web Playground 的 `组件测试` 菜单验证交互与样式。
-2. 再切换到 `工具测试` 菜单验证函数输出与参数边界。
+1. 先访问 `http://localhost:3010/components` 验证组件交互与样式。
+2. 再访问 `http://localhost:3010/tools` 验证工具函数输出与参数边界。
 3. 最后在文档页面沉淀示例与规范。

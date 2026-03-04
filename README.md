@@ -1,21 +1,15 @@
-# g-ai-ui
+﻿# g-ai-ui
 
-`g-ai-ui` 是一个基于 `Turborepo + pnpm workspace` 的 AI 前端组件库 monorepo，聚焦会话式产品构建与工程化落地。
+`g-ai-ui` 是一个基于 `Turborepo + pnpm workspace` 的 AI 前端组件与工具函数 monorepo，聚焦会话式产品的快速搭建与工程化验证。
 
 项目地址：<https://github.com/lotosv2010/g-ai-ui>
 
 ## 项目目标
 
-- 提供 Ant Design X 风格的 AI 交互组件体系
-- 提供基于 `es-toolkit` 的 AI 工具函数能力
-- 提供可运行的 Playground 作为联调与验证层
-- 提供与实现同步的工程化文档体系
-
-## 仓库信息
-
-- Author: `Robin`
-- Email: `lotosv2010@163.com`
-- Repository: `https://github.com/lotosv2010/g-ai-ui`
+- 提供面向 AI 场景的 UI 组件库（`@g-ai-ui/ui`）
+- 提供可复用的 AI 工具函数库（`@g-ai-ui/utils`）
+- 提供路由化 Playground（`@g-ai-ui/web`）用于联调验证
+- 提供与实现同步的工程化文档（`@g-ai-ui/doc`）
 
 ## 技术架构
 
@@ -23,8 +17,8 @@
 | --- | --- | --- | --- |
 | `@g-ai-ui/ui` | `packages/ui` | React 18, TypeScript, Tailwind CSS, tsup | AI 交互组件 |
 | `@g-ai-ui/utils` | `packages/utils` | TypeScript, es-toolkit, tsup | AI 工具函数 |
-| `@g-ai-ui/web` | `apps/web` | Next.js 15, Turbopack, Tailwind CSS | 组件/工具联调 Playground |
-| `@g-ai-ui/doc` | `apps/doc` | Rspress, React, Tailwind CSS | 文档与实践指南 |
+| `@g-ai-ui/web` | `apps/web` | Next.js 15, Turbopack, Tailwind CSS | 组件/工具路由化测试场 |
+| `@g-ai-ui/doc` | `apps/doc` | Rspress, React, Tailwind CSS | 文档站 |
 
 依赖关系：
 
@@ -33,7 +27,7 @@
 @g-ai-ui/doc  -> @g-ai-ui/ui
 ```
 
-## 组件能力（@g-ai-ui/ui）
+## UI 组件（@g-ai-ui/ui）
 
 - `Welcome`
 - `Conversations`
@@ -42,9 +36,9 @@
 - `Bubble`
 - `Sender`
 
-设计方向：Ant Design X 风格的浅色卡片体系、蓝青渐变主色、高密度会话交互布局。
+当前视觉方向：更接近市场常见 AI 产品的浅色玻璃卡片、蓝青渐变主色、强状态反馈与高密度会话布局。
 
-## 工具能力（@g-ai-ui/utils）
+## 工具函数（@g-ai-ui/utils）
 
 - `normalizePrompt`
 - `renderPromptTemplate`
@@ -54,19 +48,18 @@
 
 ## Web Playground（@g-ai-ui/web）
 
-Playground 采用双菜单布局：
+Playground 采用路由拆分，入口如下：
 
-- `组件测试`：验证组件样式与交互链路
-- `工具测试`：验证工具函数输入输出与参数边界
-
-访问地址：`http://localhost:3010`
+- `http://localhost:3010/components`：组件测试路由，验证 UI 组件样式与交互链路
+- `http://localhost:3010/tools`：工具测试路由，验证 utils 输入输出与参数边界
+- `http://localhost:3010`：自动重定向到 `/components`
 
 ## 文档站（@g-ai-ui/doc）
 
-文档内容覆盖：
+文档覆盖：
 
 - 快速开始
-- 组件文档与 API
+- 组件说明与 API
 - 工具函数指南
 - Web Playground 工程实践
 - 样式定制建议
@@ -100,15 +93,15 @@ pnpm --filter @g-ai-ui/doc dev
 
 ```txt
 g-ai-ui/
-├─ apps/
-│  ├─ web/                 # Next.js Playground
-│  └─ doc/                 # Rspress 文档站
-├─ packages/
-│  ├─ ui/                  # React 组件库
-│  └─ utils/               # AI 工具函数库
-├─ pnpm-workspace.yaml
-├─ turbo.json
-└─ package.json
+├── apps/
+│   ├── web/                 # Next.js 路由化 Playground
+│   └── doc/                 # Rspress 文档站
+├── packages/
+│   ├── ui/                  # React 组件库
+│   └── utils/               # AI 工具函数库
+├── pnpm-workspace.yaml
+├── turbo.json
+└── package.json
 ```
 
 ## License

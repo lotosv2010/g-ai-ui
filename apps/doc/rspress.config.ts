@@ -5,6 +5,7 @@ export default defineConfig({
   description: '面向 AI 场景的 React 组件与工具函数体系',
   icon: '/rspress-icon.svg',
   lang: 'zh-CN',
+  ssg: false,
   markdown: {
     showLineNumbers: true,
   },
