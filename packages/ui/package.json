@@ -25,7 +25,7 @@
     "./styles.css": "./dist/styles.css"
   },
   "scripts": {
-    "build": "tsup && pnpm run build:styles",
+    "build": "tsup --clean && pnpm run build:styles",
     "build:styles": "tailwindcss -c tailwind.config.js -i ./src/styles.css -o ./dist/styles.css --minify",
     "dev": "pnpm run build:styles && tsup --watch --onSuccess \"pnpm run build:styles\"",
     "lint": "eslint src/**/*.{ts,tsx}",

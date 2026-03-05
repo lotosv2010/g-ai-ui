@@ -1,9 +1,11 @@
 import { defineConfig } from 'rspress/config'
 
 export default defineConfig({
-  title: 'g-ai-ui',
+  title: 'G Design X',
   description: '面向 AI 场景的 React 组件与工具函数体系',
   icon: '/rspress-icon.svg',
+  logo: '/rspress-icon.svg',
+  logoText: 'G Design X',
   lang: 'zh-CN',
   ssg: false,
   markdown: {
