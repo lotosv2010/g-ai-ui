@@ -16,7 +16,7 @@
     "dev": "next dev --turbo --port 3010",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "eslint src --ext .ts,.tsx"
   },
   "dependencies": {
     "@g-ai-ui/ui": "workspace:*",
