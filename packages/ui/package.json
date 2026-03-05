@@ -15,16 +15,19 @@
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
+  "style": "./dist/styles.css",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
       "import": "./dist/index.mjs",
       "require": "./dist/index.js"
-    }
+    },
+    "./styles.css": "./dist/styles.css"
   },
   "scripts": {
-    "build": "tsup",
-    "dev": "tsup --watch",
+    "build": "tsup && pnpm run build:styles",
+    "build:styles": "tailwindcss -c tailwind.config.js -i ./src/styles.css -o ./dist/styles.css --minify",
+    "dev": "pnpm run build:styles && tsup --watch --onSuccess \"pnpm run build:styles\"",
     "lint": "eslint src/**/*.{ts,tsx}",
     "typecheck": "tsc --noEmit"
   },
